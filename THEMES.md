@@ -53,6 +53,10 @@ and calendar. Things to know about the layout it sits under:
 - The bottom strip below y ≈ 600 is a good place for ground, water or hills: cards
   float over it and it shows fully under the clock.
 - Everything in the scene dims to `--scene-dim` while a day is held.
+- The SVG may animate itself with SMIL (`<animate>`, `<animateTransform>`,
+  `<animateMotion>` + `<mpath>`), which keeps themes script-free. `themes/tron` uses
+  it for passing light cycles and `themes/circuit` for pulses that travel the traces;
+  `begin="3s; id.end+11s"` is the idiom for "every so often".
 
 ## 3. `theme.json` — particles
 

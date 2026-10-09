@@ -1,24 +1,71 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 720" width="2560" height="720">
-  <!-- Circuit scene: copper traces, pads, vias and an IC footprint on solder mask. -->
+  <!-- Circuit scene: copper traces, pads, vias, an IC footprint — and pulses of
+       energy that travel the traces now and then (SMIL animateMotion, no script). -->
   <defs>
     <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
       <circle cx="20" cy="20" r="1.2" fill="#5fd3b3" opacity=".25"/>
     </pattern>
+    <filter id="pglow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+    <path id="t0" d="M40 660 L260 660 L300 620 L560 620 L600 660 L1140 660"/><path id="t1" d="M40 700 L1000 700 L1040 660"/><path id="t2" d="M880 40 L880 120 L920 160 L1120 160"/><path id="t3" d="M960 40 L960 90 L1000 130 L1140 130 L1160 110"/><path id="t4" d="M40 100 L40 40 L140 40"/><path id="t5" d="M2520 40 L2520 110 L2480 150"/><path id="t6" d="M1200 700 L2520 700"/><path id="t7" d="M1230 12 L1420 12"/><path id="t8" d="M1500 40 L1700 40 L1740 80"/><path id="t9" d="M760 470 L760 580 L800 620 L1140 620"/><path id="t10" d="M1160 560 L1160 620 L1180 640"/>
   </defs>
   <rect width="2560" height="720" fill="url(#dots)"/>
   <g fill="none" stroke="#b87333" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".85">
-    <path d="M40 660 L260 660 L300 620 L560 620 L600 660 L1140 660"/><path d="M40 700 L1000 700 L1040 660"/><path d="M880 40 L880 120 L920 160 L1120 160"/><path d="M960 40 L960 90 L1000 130 L1140 130 L1160 110"/><path d="M40 100 L40 40 L140 40"/><path d="M2520 40 L2520 110 L2480 150"/><path d="M1200 700 L2520 700"/><path d="M1230 12 L1420 12"/><path d="M1500 40 L1700 40 L1740 80"/><path d="M760 470 L760 580 L800 620 L1140 620"/><path d="M1160 560 L1160 620 L1180 640"/>
+    <use href="#t0"/><use href="#t1"/><use href="#t2"/><use href="#t3"/><use href="#t4"/><use href="#t5"/><use href="#t6"/><use href="#t7"/><use href="#t8"/><use href="#t9"/><use href="#t10"/>
   </g>
   <g fill="none" stroke="#e0a05a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".6">
-    <path d="M40 660 L260 660 L300 620 L560 620 L600 660 L1140 660"/><path d="M40 700 L1000 700 L1040 660"/><path d="M880 40 L880 120 L920 160 L1120 160"/><path d="M960 40 L960 90 L1000 130 L1140 130 L1160 110"/><path d="M40 100 L40 40 L140 40"/><path d="M2520 40 L2520 110 L2480 150"/><path d="M1200 700 L2520 700"/><path d="M1230 12 L1420 12"/><path d="M1500 40 L1700 40 L1740 80"/><path d="M760 470 L760 580 L800 620 L1140 620"/><path d="M1160 560 L1160 620 L1180 640"/>
+    <use href="#t0"/><use href="#t1"/><use href="#t2"/><use href="#t3"/><use href="#t4"/><use href="#t5"/><use href="#t6"/><use href="#t7"/><use href="#t8"/><use href="#t9"/><use href="#t10"/>
   </g>
   <g fill="#c9a24a" stroke="#0b2a22" stroke-width="2">
-    <circle cx="40" cy="660" r="9"/><circle cx="1140" cy="660" r="9"/><circle cx="40" cy="700" r="9"/><circle cx="1040" cy="660" r="9"/><circle cx="880" cy="40" r="9"/><circle cx="1120" cy="160" r="9"/><circle cx="960" cy="40" r="9"/><circle cx="1160" cy="110" r="9"/><circle cx="40" cy="100" r="9"/><circle cx="140" cy="40" r="9"/><circle cx="2520" cy="40" r="9"/><circle cx="2480" cy="150" r="9"/><circle cx="1200" cy="700" r="9"/><circle cx="2520" cy="700" r="9"/><circle cx="1230" cy="12" r="9"/><circle cx="1420" cy="12" r="9"/><circle cx="1500" cy="40" r="9"/><circle cx="1740" cy="80" r="9"/><circle cx="760" cy="470" r="9"/><circle cx="1140" cy="640" r="9"/><circle cx="1160" cy="560" r="9"/><circle cx="1180" cy="640" r="9"/>
+    <circle cx="40" cy="660" r="9"/><circle cx="1140" cy="660" r="9"/><circle cx="40" cy="700" r="9"/><circle cx="1040" cy="660" r="9"/><circle cx="880" cy="40" r="9"/><circle cx="1120" cy="160" r="9"/><circle cx="960" cy="40" r="9"/><circle cx="1160" cy="110" r="9"/><circle cx="40" cy="100" r="9"/><circle cx="140" cy="40" r="9"/><circle cx="2520" cy="40" r="9"/><circle cx="2480" cy="150" r="9"/><circle cx="1200" cy="700" r="9"/><circle cx="2520" cy="700" r="9"/><circle cx="1230" cy="12" r="9"/><circle cx="1420" cy="12" r="9"/><circle cx="1500" cy="40" r="9"/><circle cx="1740" cy="80" r="9"/><circle cx="760" cy="470" r="9"/><circle cx="1140" cy="620" r="9"/><circle cx="1160" cy="560" r="9"/><circle cx="1180" cy="640" r="9"/>
   </g>
   <g fill="#0b2a22" stroke="#c9a24a" stroke-width="2"><circle cx="1300" cy="680" r="5"/><circle cx="1480" cy="680" r="5"/><circle cx="1660" cy="680" r="5"/><circle cx="1840" cy="680" r="5"/><circle cx="2020" cy="680" r="5"/><circle cx="2200" cy="680" r="5"/><circle cx="2380" cy="680" r="5"/></g>
   <g transform="translate(860,560)">
     <rect x="0" y="0" width="200" height="90" rx="6" fill="#0b2a22" stroke="#2f8d72" stroke-width="2"/>
     <circle cx="18" cy="18" r="5" fill="#1f4a3c"/>
     <rect x="10" y="-14" width="12" height="14" fill="#c9a24a"/><rect x="10" y="90" width="12" height="14" fill="#c9a24a"/><rect x="36" y="-14" width="12" height="14" fill="#c9a24a"/><rect x="36" y="90" width="12" height="14" fill="#c9a24a"/><rect x="62" y="-14" width="12" height="14" fill="#c9a24a"/><rect x="62" y="90" width="12" height="14" fill="#c9a24a"/><rect x="88" y="-14" width="12" height="14" fill="#c9a24a"/><rect x="88" y="90" width="12" height="14" fill="#c9a24a"/><rect x="114" y="-14" width="12" height="14" fill="#c9a24a"/><rect x="114" y="90" width="12" height="14" fill="#c9a24a"/><rect x="140" y="-14" width="12" height="14" fill="#c9a24a"/><rect x="140" y="90" width="12" height="14" fill="#c9a24a"/><rect x="166" y="-14" width="12" height="14" fill="#c9a24a"/><rect x="166" y="90" width="12" height="14" fill="#c9a24a"/>
+  </g>
+  <!-- energy pulses -->
+  <g>
+    <g opacity="0">
+      <animate id="p0" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="2.4s" begin="3s; p0.end+11s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="2.4s" begin="3s; p0.end+11s"  calcMode="linear" fill="remove"><mpath href="#t0"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="2.4s" begin="3s; p0.end+11s"  calcMode="linear" fill="remove"><mpath href="#t0"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p1" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="2.2s" begin="7s; p1.end+14s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="2.2s" begin="7s; p1.end+14s"  calcMode="linear" fill="remove"><mpath href="#t1"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="2.2s" begin="7s; p1.end+14s"  calcMode="linear" fill="remove"><mpath href="#t1"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p2" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="1.6s" begin="5s; p2.end+17s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="1.6s" begin="5s; p2.end+17s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t2"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="1.6s" begin="5s; p2.end+17s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t2"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p3" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="1.6s" begin="12s; p3.end+19s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="1.6s" begin="12s; p3.end+19s"  calcMode="linear" fill="remove"><mpath href="#t3"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="1.6s" begin="12s; p3.end+19s"  calcMode="linear" fill="remove"><mpath href="#t3"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p4" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="2.8s" begin="2s; p4.end+13s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="2.8s" begin="2s; p4.end+13s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t6"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="2.8s" begin="2s; p4.end+13s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t6"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p5" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="1.4s" begin="9s; p5.end+23s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="1.4s" begin="9s; p5.end+23s"  calcMode="linear" fill="remove"><mpath href="#t8"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="1.4s" begin="9s; p5.end+23s"  calcMode="linear" fill="remove"><mpath href="#t8"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p6" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="1.9s" begin="4.5s; p6.end+16s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="1.9s" begin="4.5s; p6.end+16s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t9"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="1.9s" begin="4.5s; p6.end+16s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t9"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p7" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="1.0s" begin="15s; p7.end+21s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="1.0s" begin="15s; p7.end+21s"  calcMode="linear" fill="remove"><mpath href="#t10"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="1.0s" begin="15s; p7.end+21s"  calcMode="linear" fill="remove"><mpath href="#t10"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p8" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="1.0s" begin="20s; p8.end+29s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="1.0s" begin="20s; p8.end+29s"  calcMode="linear" fill="remove"><mpath href="#t4"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="1.0s" begin="20s; p8.end+29s"  calcMode="linear" fill="remove"><mpath href="#t4"/></animateMotion></circle>
+    </g><g opacity="0">
+      <animate id="p9" attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.92;1" dur="1.0s" begin="24s; p9.end+31s" fill="remove"/>
+      <circle r="14" fill="#ffe9a8" opacity=".35" filter="url(#pglow)"><animateMotion dur="1.0s" begin="24s; p9.end+31s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t5"/></animateMotion></circle>
+      <circle r="5" fill="#fff6d6"><animateMotion dur="1.0s" begin="24s; p9.end+31s" keyPoints="1;0" keyTimes="0;1" calcMode="linear" fill="remove"><mpath href="#t5"/></animateMotion></circle>
+    </g>
   </g>
 </svg>

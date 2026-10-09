@@ -390,14 +390,17 @@
       const el = document.createElement("div");
       el.className = "particle";
       const [fill, stroke] = colors[i % colors.length];
-      el.innerHTML = `<svg viewBox="${esc(p.viewBox || "0 0 32 32")}"><path d="${esc(p.path)}" fill="${esc(fill)}" stroke="${esc(stroke)}" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+      el.innerHTML = `<div class="sway"><svg viewBox="${esc(p.viewBox || "0 0 32 32")}"><path d="${esc(p.path)}" fill="${esc(fill)}" stroke="${esc(stroke)}" stroke-width="1.2" stroke-linejoin="round"/></svg></div>`;
       const s = rnd(size[0], size[1]);
       el.style.width = el.style.height = s + "px";
       el.style.left = rnd(0, 2560) + "px";
       el.style.setProperty("--o", rnd(op[0], op[1]).toFixed(2));
       const f = rnd(fall[0], fall[1]), w = rnd(sway[0], sway[1]);
-      el.style.animationDuration = `${f}s, ${w}s`;
-      el.style.animationDelay = `${-Math.random() * f}s, ${-Math.random() * w}s`;
+      el.style.animationDuration = `${f}s`;
+      el.style.animationDelay = `${-Math.random() * f}s`;
+      const sw = el.querySelector(".sway");
+      sw.style.animationDuration = `${w}s`;
+      sw.style.animationDelay = `${-Math.random() * w}s`;
       el.querySelector("svg").style.animationDuration = rnd(spin[0], spin[1]) + "s";
       host.appendChild(el);
     }

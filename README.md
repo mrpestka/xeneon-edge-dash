@@ -109,6 +109,8 @@ journalctl --user -u edge-dash -u edge-schedule -f
 Keys while the kiosk has focus: `Esc` quit, `F5` reload, `F12` screenshot.
 Touch: hold a day for its agenda; swipe left/right to change month (tap **Today** to
 jump back); tap the top-left corner for the theme picker.
+The kiosk reloads the page every 6 hours (`--reload-hours=N`, 0 disables) and whenever
+the renderer process dies, so a slow leak or a crash never leaves the panel blank.
 
 ## Customising
 

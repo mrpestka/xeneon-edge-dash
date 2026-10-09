@@ -4,14 +4,15 @@ import QtWebEngine
 
 // Fullscreen kiosk window for a Corsair Xeneon Edge (2560x720) or any secondary panel.
 //
-//   qml6 kiosk.qml -- [--output=DP-4] [--theme=tokyo] [--set-theme=NAME|default] [--hold=YYYY-MM-DD] [--picker] [--shot] [--reload-hours=6]
+//   qml6 kiosk.qml -- [--output=DP-4] [--theme=tokyo] [--set-theme=NAME|default] [--hold=YYYY-MM-DD] [--picker] [--shot] [--restart-hours=2]
 //
 // --theme is the installed default; --set-theme stores a panel choice (what tapping the
 // hidden top-left corner does), "default" clears it.
 //
-// The page is reloaded every --reload-hours (default 6, 0 disables) and whenever the
-// renderer process dies: QtWebEngine slowly leaks memory under continuous animation,
-// and a dead renderer otherwise leaves a blank panel.
+// QtWebEngine 6.11 leaks renderer memory on every repaint (tens of MB a minute with an
+// animated theme) and reloading the page does not give it back, so the kiosk exits every
+// --restart-hours (default 2, 0 disables) and lets systemd start a fresh process. A dead
+// renderer is reloaded in place, which does get a new renderer process.
 //
 // Picks the screen named by --output; without it, the first 2560x720 screen.
 // Re-pins itself if screens change (hotplug / resume). Esc quits, F5 reloads,
@@ -98,10 +99,10 @@ Window {
     }
     Timer { id: recover; interval: 1500; onTriggered: view.reload() }
 
-    property real reloadHours: arg("--reload-hours") === "" ? 6 : Number(arg("--reload-hours"))
+    property real restartHours: arg("--restart-hours") === "" ? 2 : Number(arg("--restart-hours"))
     Timer {
-        interval: Math.max(1, reloadHours) * 3600 * 1000; repeat: true; running: reloadHours > 0
-        onTriggered: { console.warn("edge-dash: periodic reload"); view.reload() }
+        interval: restartHours * 3600 * 1000; repeat: false; running: restartHours > 0
+        onTriggered: { console.warn("edge-dash: scheduled restart"); Qt.exit(75) }
     }
 
     Shortcut { sequence: "Escape"; onActivated: Qt.quit() }

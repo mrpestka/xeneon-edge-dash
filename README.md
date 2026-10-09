@@ -24,9 +24,7 @@ and drifting petals.
 
 **Themes** are drop-in folders: a CSS token file, an optional 2560×720 SVG scene and
 an optional particle config. See [THEMES.md](THEMES.md) to make your own without
-touching the logic. Eight ship in `themes/`. Switch with `./install.sh --theme=<name>`,
-or **tap the hidden touchpoint in the panel's top-left corner** for a picker; a choice
-made there sticks across restarts until you pick "Use installed default".
+touching the logic. Eight ship in `themes/`; see *Switching themes* below.
 
 | | |
 |---|---|
@@ -77,6 +75,24 @@ systemctl --user start edge-schedule && journalctl --user -u edge-schedule -n 5
 `calendars.example.toml` explains where each provider hides its ICS link. Those links
 are bearer tokens, so the file is created owner-only and lives outside the repo.
 
+## Switching themes
+
+Tap the panel's **top-left corner** (an invisible 260×220 px touchpoint; a small ring
+confirms the tap) and a picker slides over the dashboard: one tile per theme with its
+colour swatch, the current one outlined, the installed default labelled.
+
+![Theme picker](docs/theme-picker.png)
+
+Tapping a tile switches the theme live, no reload, and the choice is remembered across
+restarts until you tap **Use installed default**. The picker closes on *Close*, on a tap
+outside it, or after 20 seconds idle. The same choice can be made from a shell:
+
+```sh
+./edge-dash.sh --set-theme=matrix      # store a panel choice
+./edge-dash.sh --set-theme=default     # clear it, back to the installed theme
+./install.sh --theme=tron              # change the installed default itself
+```
+
 ## Day to day
 
 ```sh
@@ -88,9 +104,7 @@ journalctl --user -u edge-dash -u edge-schedule -f
 ```
 
 Keys while the kiosk has focus: `Esc` quit, `F5` reload, `F12` screenshot.
-Touch: hold a day for its agenda; tap the top-left corner (180×180 px, invisible) for
-the theme picker. `./edge-dash.sh --set-theme=tron` stores the same choice from a shell,
-`--set-theme=default` clears it.
+Touch: hold a day for its agenda; tap the top-left corner for the theme picker.
 
 ## Customising
 

@@ -1,0 +1,8 @@
+[Unit]
+Description=Refresh the Edge Dash calendar schedule (ICS -> schedule.json)
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=@DIR@
+ExecStart=@UV@ run --script @DIR@/fetch_schedule.py

@@ -1,0 +1,31 @@
+# Edge Dash calendar feeds.
+# Copy to ~/.config/edge-dash/calendars.toml (chmod 600) and fill in the ICS URLs.
+#
+#   Google (private):  calendar.google.com -> Settings -> your calendar
+#                      -> Integrate calendar -> "Secret address in iCal format"
+#   Google (public):   https://calendar.google.com/calendar/ical/<calendar id>/public/basic.ics
+#   Outlook / M365:    Outlook on the web -> Settings -> Calendar -> Shared calendars
+#                      -> Publish a calendar -> ICS link
+#   Nextcloud/CalDAV:  the calendar's "export" link (…/?export)
+#
+# Secret addresses are bearer tokens: anyone holding the URL can read the calendar.
+# Keep this file owner-only and out of backups you do not trust.
+
+# timezone = "America/New_York"   # default: the system's local zone
+# past_days = 45                  # how far back to expand events
+# future_days = 75                # how far ahead
+
+[[calendar]]
+name = "Family"
+url = "https://calendar.google.com/calendar/ical/.../private-.../basic.ics"
+color = "#244d93"
+
+[[calendar]]
+name = "Work"
+url = "https://outlook.office365.com/owa/calendar/.../calendar.ics"
+color = "#7fbbe9"
+
+[[calendar]]
+name = "US Holidays"
+url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
+color = "#3f9d5a"

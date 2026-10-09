@@ -1,0 +1,6 @@
+# generated at runtime
+schedule.json
+/screenshot*.png
+/shot-*.png
+__pycache__/
+.venv/

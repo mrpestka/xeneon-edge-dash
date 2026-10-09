@@ -1,0 +1,14 @@
+{
+  "name": "Tron",
+  "particles": {
+    "count": 14,
+    "viewBox": "0 0 32 32",
+    "path": "M12 12 H20 V20 H12 Z",
+    "colors": [["#38e0ff", "#9ff1ff"], ["#1fb9d8", "#38e0ff"], ["#ff9a1f", "#ffd9a8"]],
+    "size": [6, 14],
+    "opacity": [0.35, 0.8],
+    "fall": [30, 60],
+    "sway": [8, 14],
+    "spin": [40, 80]
+  }
+}

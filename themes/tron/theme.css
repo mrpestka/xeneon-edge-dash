@@ -1,0 +1,37 @@
+/* Tron — neon cyan on near-black, orange for "today", a glowing perspective grid
+   floor and light-cycle trails in scene.svg, drifting data bits from theme.json. */
+:root {
+  --bg: #02070d;
+  --bg-2: #04111c;
+  --text: #d9fbff;
+  --text-2: #7fe9ff;
+  --accent: #38e0ff;
+  --accent-2: #ff9a1f;
+  --muted: #3f8ea3;
+  --dim: #163a48;
+  --line: rgba(56, 224, 255, .35);
+
+  --card-bg: rgba(4, 22, 34, .82);
+  --card-edge: #1fb9d8;
+  --card-text: #d9fbff;
+  --card-shadow: 0 0 10px rgba(56, 224, 255, .18), inset 0 0 18px rgba(56, 224, 255, .05);
+  --card-weekend-bg: rgba(6, 32, 48, .85);
+  --card-weekend-edge: #2bd4f4;
+  --card-weekend-line: rgba(56, 224, 255, .5);
+  --card-weekend-text: #a9f3ff;
+
+  --today-bg: linear-gradient(180deg, rgba(60, 20, 0, .9) 0%, rgba(90, 35, 0, .95) 100%);
+  --today-text: #ffd9a8;
+  --today-edge: #ff9a1f;
+  --today-shadow: 0 0 22px rgba(255, 154, 31, .55), inset 0 0 20px rgba(255, 154, 31, .15);
+
+  --panel-bg: linear-gradient(90deg, #02070d 0%, #02070d 84%, rgba(2, 7, 13, 0) 100%);
+  --ev-bg: rgba(4, 22, 34, .85);
+  --scene-dim: .25;
+}
+#time { text-shadow: 0 0 18px rgba(56, 224, 255, .45), 0 0 2px rgba(217, 251, 255, .8); }
+#time .colon { text-shadow: 0 0 16px rgba(56, 224, 255, .9); }
+#month, #sched .head .dow { text-shadow: 0 0 14px rgba(56, 224, 255, .6); letter-spacing: .06em; text-transform: uppercase; }
+#grid .dow { letter-spacing: .2em; }
+#grid .day.today { text-shadow: 0 0 10px rgba(255, 154, 31, .8); }
+#grid .day.today .dots i { background: #ffd9a8 !important; }

@@ -1,0 +1,33 @@
+/* Circuit — PCB green-black with copper traces and solder-mask teal; gold pads for
+   "today". Traces live in scene.svg; no particles. */
+:root {
+  --bg: #061a14;
+  --bg-2: #04120e;
+  --text: #e9f5ef;
+  --text-2: #9fd6c2;
+  --accent: #f2c14e;           /* gold pads */
+  --accent-2: #5fd3b3;         /* solder mask teal */
+  --muted: #5f9a86;
+  --dim: #1f4a3c;
+  --line: rgba(95, 211, 179, .3);
+
+  --card-bg: rgba(8, 40, 31, .88);
+  --card-edge: #2f8d72;
+  --card-text: #e9f5ef;
+  --card-shadow: 0 2px 6px rgba(0, 0, 0, .35);
+  --card-weekend-bg: rgba(10, 52, 40, .9);
+  --card-weekend-edge: #5fd3b3;
+  --card-weekend-line: rgba(95, 211, 179, .45);
+  --card-weekend-text: #c7eee1;
+
+  --today-bg: linear-gradient(160deg, #f7d070 0%, #e0a92e 100%);
+  --today-text: #2a1e05;
+  --today-edge: #b8851c;
+  --today-shadow: 0 6px 18px rgba(242, 193, 78, .35);
+
+  --panel-bg: linear-gradient(90deg, #061a14 0%, #061a14 84%, rgba(6, 26, 20, 0) 100%);
+  --ev-bg: rgba(8, 40, 31, .9);
+  --scene-dim: .2;
+}
+#grid .day { border-radius: 6px; }
+#time .colon { color: var(--accent-2); }

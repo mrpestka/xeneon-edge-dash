@@ -1,0 +1,39 @@
+/* Phosphor — green monochrome CRT. Monospace digits, scanlines and a vignette in
+   scene.svg, no particles. Try --text: #ffb000 (and friends) for amber. */
+:root {
+  --font: "Noto Sans Mono", "DejaVu Sans Mono", monospace;
+  --bg: #020803;
+  --bg-2: #04120a;
+  --text: #4dff7a;
+  --text-2: #2fd45f;
+  --accent: #b6ffcb;
+  --accent-2: #2fd45f;
+  --muted: #1f8f43;
+  --dim: #0f4a24;
+  --line: rgba(77, 255, 122, .3);
+
+  --card-bg: rgba(3, 20, 9, .9);
+  --card-edge: #1f8f43;
+  --card-text: #4dff7a;
+  --card-shadow: none;
+  --card-weekend-bg: rgba(5, 32, 14, .9);
+  --card-weekend-edge: #2fd45f;
+  --card-weekend-line: rgba(77, 255, 122, .45);
+  --card-weekend-text: #7dffa0;
+
+  --today-bg: #4dff7a;
+  --today-text: #021a08;
+  --today-edge: #b6ffcb;
+  --today-shadow: 0 0 24px rgba(77, 255, 122, .55);
+
+  --panel-bg: linear-gradient(90deg, #020803 0%, #020803 84%, rgba(2, 8, 3, 0) 100%);
+  --ev-bg: rgba(3, 20, 9, .9);
+  --scene-dim: .5;
+}
+#time, #month, #sched .head .dow { text-shadow: 0 0 10px rgba(77, 255, 122, .6); }
+#time { font-weight: 400; letter-spacing: -0.04em; }
+#date b, #month, #grid .dow, #sched .head .dow { text-transform: uppercase; letter-spacing: .08em; }
+#time .colon.off { opacity: .15; }              /* cursor-style blink */
+#grid .day { border-radius: 2px; }
+#sched .ev { border-radius: 2px; }
+#sched .ev .bar { border-radius: 0; }

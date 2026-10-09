@@ -33,7 +33,7 @@ touching the logic. Eight ship in `themes/`; see *Switching themes* below.
 |---|---|
 | **tokyo** (default) — the Akko set, above | **tron** — neon grid, light-cycle trails, drifting bits<br>![tron](docs/themes/tron.png) |
 | **phosphor** — green CRT, monospace, scanlines<br>![phosphor](docs/themes/phosphor.png) | **circuit** — copper traces on solder mask<br>![circuit](docs/themes/circuit.png) |
-| **citypop** — 80s Tokyo at night: neon, moon, wet streets<br>![citypop](docs/themes/citypop.png) | **citypop-day** — synthwave sunset: big striped sun, a coupe on a rolling grid<br>![citypop-day](docs/themes/citypop-day.png) |
+| **citypop** — 80s Tokyo at night: an empty neon-lined street, lit windows, moon<br>![citypop](docs/themes/citypop.png) | **citypop-day** — synthwave sunset: big striped sun, a coupe on a rolling grid<br>![citypop-day](docs/themes/citypop-day.png) |
 | **matrix** — phosphor's sibling with digital rain<br>![matrix](docs/themes/matrix.png) | **minimal** — bare dark, the template to copy<br>![minimal](docs/themes/minimal.png) |
 
 ## Requirements

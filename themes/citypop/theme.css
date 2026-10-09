@@ -1,6 +1,7 @@
-/* City Pop — late-night 80s Tokyo: indigo sky, teal towers, hot-pink neon, a crescent
-   moon and wet streets. Chill. Scene in scene.svg (signs flicker, taillights drift),
-   a little slow rain from theme.json. */
+/* City Pop — late-night 80s Tokyo: looking down an empty, rain-slick street lined with
+   neon signs on both sides, lit windows everywhere, a crescent moon and a tower at the
+   end of the road. The street is empty but the city is awake. Scene in scene.svg (signs
+   flicker, reflections shimmer), a little slow rain from theme.json. */
 :root {
   --bg: #091632;
   --bg-2: #0e2650;
@@ -30,8 +31,9 @@
   --ev-bg: rgba(10, 28, 58, .88);
   --scene-dim: .22;
 }
-#time { text-shadow: 0 0 22px rgba(53, 208, 220, .35); }
 #time .colon { text-shadow: 0 0 16px rgba(255, 63, 164, .8); }
 #month, #sched .head .dow { text-shadow: 0 0 18px rgba(255, 63, 164, .55); font-style: italic; }
 #date b { font-style: italic; }
+#date, #sub, #year { text-shadow: 0 0 10px #091632, 0 0 22px #091632, 0 2px 6px rgba(0, 0, 0, .9); }
+#time { text-shadow: 0 0 22px rgba(53, 208, 220, .35), 0 0 12px #091632, 0 0 30px #091632; }
 #grid .day.today { text-shadow: 0 0 8px rgba(255, 255, 255, .6); }

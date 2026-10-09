@@ -14,8 +14,8 @@ and drifting petals.
 
 - **24-hour clock** with seconds, date, ISO week and day of year.
 - **Month calendar**, Sunday or Monday start, always at least five full weeks
-  (six when needed); trailing days of the next month fill the last row, leading cells
-  before the 1st stay blank (or show the previous month, one flag); today highlighted.
+  (six when needed), padded with the neighbouring months' days (or blank leading cells,
+  one flag); today highlighted.
 - **Calendar feeds**: a small fetcher merges ICS feeds into `schedule.json` every
   15 minutes. Days with events get a dot per calendar; **hold a day** and the clock
   side swaps to that day's agenda, release to go back.

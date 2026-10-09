@@ -40,7 +40,7 @@
   // ---- settings ----
   const WEEK_START = 0;                       // 0 = Sunday, 1 = Monday
   const MIN_WEEKS = 5;                        // at least this many week rows (6 when the month needs it)
-  const SHOW_PREV_MONTH = false;              // false: leading cells before the 1st stay blank; trailing next-month days still show
+  const SHOW_PREV_MONTH = true;               // false: leading cells before the 1st stay blank
   const SCHEDULE_REFRESH_MS = 5 * 60 * 1000;  // how often to re-read schedule.json
   const MAX_EVENTS_SHOWN = 6;                 // rows in the held-day panel before "+N more"
 
@@ -130,8 +130,8 @@
       cell.textContent = d.getDate();
       cell.dataset.date = isoDay(d);
 
-      // label the first visible day of a neighbouring month so padded days read clearly
-      if (d.getMonth() !== m && (d.getDate() === 1 || i === 0)) {
+      // label the 1st of the following month; the leading days obviously belong to last month
+      if (d > first && d.getMonth() !== m && d.getDate() === 1) {
         const tag = document.createElement("span");
         tag.className = "m";
         tag.textContent = MON_SHORT[d.getMonth()];

@@ -84,6 +84,7 @@ body.holding #scene, body.holding #particles { opacity: var(--scene-dim); }
   box-shadow: var(--card-shadow); transition: transform .08s ease, filter .08s ease; }
 #grid .day.weekend { background: var(--card-weekend-bg); border-color: var(--card-weekend-line); border-bottom-color: var(--card-weekend-edge); color: var(--card-weekend-text); }
 #grid .day.other { color: var(--dim); background: transparent; border-color: transparent; box-shadow: none; }
+#grid .day.blank { background: transparent; border-color: transparent; box-shadow: none; pointer-events: none; }
 #grid .day.past:not(.other) { color: var(--muted); }
 #grid .day.today { color: var(--today-text); background: var(--today-bg); border-color: var(--today-edge);
   border-bottom-color: var(--today-edge); font-weight: 600; box-shadow: var(--today-shadow); }

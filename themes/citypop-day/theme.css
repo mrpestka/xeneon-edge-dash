@@ -8,7 +8,7 @@
   --accent: #ff6ec7;            /* hot pink */
   --accent-2: #5ee7ff;          /* synthwave cyan */
   --muted: #c6b3dd;
-  --dim: #5a3f7a;
+  --dim: #b39ad4;              /* padded next-month days stay legible */
   --line: rgba(255, 110, 199, .3);
 
   --card-bg: rgba(38, 12, 74, .96);

@@ -14,7 +14,8 @@ and drifting petals.
 
 - **24-hour clock** with seconds, date, ISO week and day of year.
 - **Month calendar**, Sunday or Monday start, always at least five full weeks
-  (six when needed), padded with the neighbouring months' days; today highlighted.
+  (six when needed); trailing days of the next month fill the last row, leading cells
+  before the 1st stay blank (or show the previous month, one flag); today highlighted.
 - **Calendar feeds**: a small fetcher merges ICS feeds into `schedule.json` every
   15 minutes. Days with events get a dot per calendar; **hold a day** and the clock
   side swaps to that day's agenda, release to go back.
@@ -93,7 +94,7 @@ Keys while the kiosk has focus: `Esc` quit, `F5` reload, `F12` screenshot.
 | Colours, cards, fonts | `themes/<name>/theme.css` tokens (contract in THEMES.md) |
 | Artwork | `themes/<name>/scene.svg`, 2560×720 |
 | Petals / snow / particles | `themes/<name>/theme.json` |
-| Week start, min. weeks, refresh interval | the `settings` block at the top of the script in `index.html` |
+| Week start, min. weeks, previous-month padding, refresh interval | the `settings` block at the top of the script in `index.html` |
 | Which screen | `./install.sh --output=NAME`, or any 2560×720 screen by default |
 | Feed range / timezone | `past_days`, `future_days`, `timezone` in `calendars.toml` |
 

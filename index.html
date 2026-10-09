@@ -40,6 +40,7 @@
   // ---- settings ----
   const WEEK_START = 0;                       // 0 = Sunday, 1 = Monday
   const MIN_WEEKS = 5;                        // at least this many week rows (6 when the month needs it)
+  const SHOW_PREV_MONTH = false;              // false: leading cells before the 1st stay blank; trailing next-month days still show
   const SCHEDULE_REFRESH_MS = 5 * 60 * 1000;  // how often to re-read schedule.json
   const MAX_EVENTS_SHOWN = 6;                 // rows in the held-day panel before "+N more"
 
@@ -114,6 +115,11 @@
     for (let i = 0; i < weeks * 7; i++) {
       const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
       const cell = document.createElement("div");
+      if (!SHOW_PREV_MONTH && d < first) {          // leading padding: keep the grid slot, show nothing
+        cell.className = "day blank";
+        grid.appendChild(cell);
+        continue;
+      }
       const classes = ["day"];
       const dow = d.getDay();
       if (dow === 0 || dow === 6) classes.push("weekend");

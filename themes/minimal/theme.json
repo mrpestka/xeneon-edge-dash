@@ -1,1 +1,11 @@
-{ "name": "Minimal", "particles": { "count": 0 } }
+{
+  "name": "Minimal",
+  "particles": {
+    "count": 0
+  },
+  "swatch": [
+    "#0f1216",
+    "#ffb454",
+    "#6fb6e6"
+  ]
+}

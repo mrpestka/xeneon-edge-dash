@@ -1,1 +1,11 @@
-{ "name": "City Pop (day)", "particles": { "count": 0 } }
+{
+  "name": "City Pop (day)",
+  "particles": {
+    "count": 0
+  },
+  "swatch": [
+    "#3b1060",
+    "#ffb13d",
+    "#ff6ec7"
+  ]
+}

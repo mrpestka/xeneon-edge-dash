@@ -118,3 +118,26 @@ body.holding #clock { opacity: 0; }   /* the panel's right edge fades, so hide t
 #sched .empty { font-size: 36px; color: var(--muted); padding: 30px 0; }
 #sched .more { font-size: 26px; color: var(--accent); padding: 6px 18px; }
 #sched .foot { font-size: 22px; color: var(--muted); letter-spacing: .06em; margin-top: 14px; }
+
+/* ---- hidden corner touchpoint + theme picker ---- */
+#corner { position: absolute; left: 0; top: 0; width: 180px; height: 180px; z-index: 4; }
+#picker { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 0, 0, .55); opacity: 0; pointer-events: none; transition: opacity .15s ease; }
+#picker.show { opacity: 1; pointer-events: auto; }
+#picker .box { width: 1500px; max-height: 660px; background: var(--bg); border: 1px solid var(--line); border-radius: 18px;
+  padding: 28px 34px; display: flex; flex-direction: column; gap: 22px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+#picker .head { display: flex; align-items: center; justify-content: space-between; }
+#picker .title { font-size: 44px; font-weight: 500; color: var(--accent); }
+#picker button { font: inherit; color: var(--text); background: var(--card-bg); border: 1px solid var(--line);
+  border-radius: 12px; cursor: pointer; touch-action: manipulation; }
+#picker .close, #picker .reset { font-size: 26px; padding: 12px 26px; }
+#picker .list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+#picker .tb { display: flex; flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; min-height: 120px;
+  border-bottom: 4px solid var(--card-edge); position: relative; }
+#picker .tb.on { border-color: var(--accent); border-bottom-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+#picker .tb .sw { display: flex; height: 34px; border-radius: 8px; overflow: hidden; }
+#picker .tb .sw i { flex: 1; display: block; }
+#picker .tb .nm { font-size: 30px; text-align: left; }
+#picker .tb .def { position: absolute; right: 14px; bottom: 14px; font-size: 18px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+#picker .foot { display: flex; align-items: center; justify-content: space-between; }
+#picker .hint { font-size: 22px; color: var(--muted); letter-spacing: .04em; }

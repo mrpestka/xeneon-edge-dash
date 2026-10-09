@@ -4,7 +4,10 @@ import QtWebEngine
 
 // Fullscreen kiosk window for a Corsair Xeneon Edge (2560x720) or any secondary panel.
 //
-//   qml6 kiosk.qml -- [--output=DP-4] [--theme=tokyo] [--hold=YYYY-MM-DD] [--shot]
+//   qml6 kiosk.qml -- [--output=DP-4] [--theme=tokyo] [--set-theme=NAME|default] [--hold=YYYY-MM-DD] [--picker] [--shot]
+//
+// --theme is the installed default; --set-theme stores a panel choice (what tapping the
+// hidden top-left corner does), "default" clears it.
 //
 // Picks the screen named by --output; without it, the first 2560x720 screen.
 // Re-pins itself if screens change (hotplug / resume). Esc quits, F5 reloads,
@@ -29,6 +32,8 @@ Window {
         var q = []
         if (arg("--theme")) q.push("theme=" + arg("--theme"))
         if (arg("--hold")) q.push("hold=" + arg("--hold"))
+        if (args.indexOf("--picker") >= 0) q.push("picker=1")
+        if (arg("--set-theme")) q.push("settheme=" + arg("--set-theme"))
         return Qt.resolvedUrl("index.html") + (q.length ? "?" + q.join("&") : "")
     }
 
@@ -61,9 +66,14 @@ Window {
     Timer { id: retry; interval: 5000; onTriggered: place() }
     Connections { target: Qt.application; function onScreensChanged() { place() } }
 
+    // A named, on-disk profile: the stock QML default profile is off-the-record, which
+    // would forget the theme picked on the panel at every restart.
+    WebEngineProfile { id: profile; storageName: "edge-dash"; offTheRecord: false }
+
     WebEngineView {
         id: view
         anchors.fill: parent
+        profile: profile
         url: win.page
         backgroundColor: win.color
         settings.showScrollBars: false

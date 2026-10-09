@@ -1,1 +1,11 @@
-{ "name": "Matrix", "particles": { "count": 0 } }
+{
+  "name": "Matrix",
+  "particles": {
+    "count": 0
+  },
+  "swatch": [
+    "#000502",
+    "#00ff41",
+    "#c8ffd4"
+  ]
+}

@@ -24,7 +24,9 @@ and drifting petals.
 
 **Themes** are drop-in folders: a CSS token file, an optional 2560×720 SVG scene and
 an optional particle config. See [THEMES.md](THEMES.md) to make your own without
-touching the logic. Eight ship in `themes/`, switch with `./install.sh --theme=<name>`:
+touching the logic. Eight ship in `themes/`. Switch with `./install.sh --theme=<name>`,
+or **tap the hidden touchpoint in the panel's top-left corner** for a picker; a choice
+made there sticks across restarts until you pick "Use installed default".
 
 | | |
 |---|---|
@@ -86,6 +88,9 @@ journalctl --user -u edge-dash -u edge-schedule -f
 ```
 
 Keys while the kiosk has focus: `Esc` quit, `F5` reload, `F12` screenshot.
+Touch: hold a day for its agenda; tap the top-left corner (180×180 px, invisible) for
+the theme picker. `./edge-dash.sh --set-theme=tron` stores the same choice from a shell,
+`--set-theme=default` clears it.
 
 ## Customising
 
@@ -106,6 +111,7 @@ base.css               layout + token defaults (the theme contract)
 themes/tokyo/          default theme: theme.css, scene.svg, theme.json
 themes/minimal/        bare dark theme, the starting point for your own
 themes/tron|phosphor|matrix|circuit|citypop|citypop-day/  more themes
+themes/themes.json     which themes the picker lists, in order
 THEMES.md              how to write a theme
 kiosk.qml              fullscreen QtWebEngine window pinned to the Edge
 edge-dash.sh           launcher (qml6)

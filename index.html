@@ -8,8 +8,17 @@
   // Theme = themes/<name>/{theme.css, scene.svg, theme.json}. Chosen with ?theme=<name>
   // (the kiosk passes --theme through). See THEMES.md.
   const PARAMS = new URLSearchParams(location.search);
-  const THEME = (PARAMS.get("theme") || "tokyo").replace(/[^a-z0-9_-]/gi, "");
-  document.write(`<link rel="stylesheet" href="themes/${THEME}/theme.css">`);
+  const cleanName = n => String(n || "").replace(/[^a-z0-9_-]/gi, "");
+  const DEFAULT_THEME = cleanName(PARAMS.get("theme")) || "tokyo";   // what --theme / install.sh set
+  let stored = null;
+  try {
+    const set = PARAMS.get("settheme");                                   // --set-theme=NAME|default
+    if (set === "default") localStorage.removeItem("edge-dash.theme");
+    else if (set) localStorage.setItem("edge-dash.theme", cleanName(set));
+    stored = cleanName(localStorage.getItem("edge-dash.theme"));
+  } catch (_) {}
+  let THEME = stored || DEFAULT_THEME;                                  // a choice made on the panel wins
+  document.write(`<link id="themecss" rel="stylesheet" href="themes/${THEME}/theme.css">`);
 </script>
 </head>
 <body>
@@ -35,6 +44,16 @@
     <div id="calhead"><div id="month"></div><div id="year"></div></div>
     <div id="grid"></div>
   </section>
+
+  <!-- hidden touchpoint (top-left corner) opens the theme picker -->
+  <div id="corner" aria-hidden="true"></div>
+  <div id="picker" aria-hidden="true">
+    <div class="box">
+      <div class="head"><span class="title">Theme</span><button class="close" type="button">Close</button></div>
+      <div class="list"></div>
+      <div class="foot"><button class="reset" type="button">Use installed default</button><span class="hint"></span></div>
+    </div>
+  </div>
 
 <script>
   // ---- settings ----
@@ -224,11 +243,78 @@
     pin();
   }
 
-  // ---- theme: scene + particles ----
-  getLocal(`themes/${THEME}/scene.svg`, svg => { $("scene").innerHTML = svg; }, () => {});
-  getLocal(`themes/${THEME}/theme.json`, text => {
-    try { spawnParticles(JSON.parse(text).particles || {}); } catch (e) { console.warn("theme.json unreadable", e); }
-  }, () => {});
+  // ---- theme: scene + particles (re-runnable, so the picker can switch live) ----
+  function applyTheme(name) {
+    THEME = name;
+    $("themecss").href = `themes/${name}/theme.css`;
+    $("scene").innerHTML = "";
+    $("particles").innerHTML = "";
+    getLocal(`themes/${name}/scene.svg`, svg => { if (THEME === name) $("scene").innerHTML = svg; }, () => {});
+    getLocal(`themes/${name}/theme.json`, text => {
+      try { if (THEME === name) spawnParticles(JSON.parse(text).particles || {}); } catch (e) { console.warn("theme.json unreadable", e); }
+    }, () => {});
+  }
+
+  // ---- theme picker: tap the hidden top-left corner ----
+  const picker = $("picker");
+  let themes = [], pickerTimer = null;
+  getLocal("themes/themes.json", text => {
+    try { themes = JSON.parse(text).themes || []; } catch (_) { themes = [THEME]; }
+    themes.forEach(t => getLocal(`themes/${t}/theme.json`, j => {
+      try { const d = JSON.parse(j); themeMeta[t] = { name: d.name || t, swatch: d.swatch || [] }; } catch (_) {}
+    }, () => {}));
+  }, () => { themes = [THEME]; });
+  const themeMeta = {};
+
+  function openPicker() {
+    const list = picker.querySelector(".list");
+    list.innerHTML = "";
+    for (const t of themes) {
+      const m = themeMeta[t] || { name: t, swatch: [] };
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "tb" + (t === THEME ? " on" : "");
+      b.dataset.theme = t;
+      b.innerHTML = `<span class="sw">${m.swatch.map(c => `<i style="background:${esc(c)}"></i>`).join("")}</span>` +
+                    `<span class="nm">${esc(m.name)}</span>` + (t === DEFAULT_THEME ? `<span class="def">default</span>` : "");
+      list.appendChild(b);
+    }
+    picker.querySelector(".hint").textContent = stored ? `panel choice: ${themeMeta[stored]?.name || stored}` : "using installed default";
+    picker.classList.add("show");
+    armPickerTimeout();
+  }
+  function closePicker() { picker.classList.remove("show"); clearTimeout(pickerTimer); }
+  function armPickerTimeout() { clearTimeout(pickerTimer); pickerTimer = setTimeout(closePicker, 20000); }
+
+  // a tap (press + release without dragging) on the corner opens it
+  let cornerDown = null;
+  $("corner").addEventListener("pointerdown", e => { cornerDown = [e.clientX, e.clientY]; });
+  $("corner").addEventListener("pointerup", e => {
+    if (cornerDown && Math.hypot(e.clientX - cornerDown[0], e.clientY - cornerDown[1]) < 24) openPicker();
+    cornerDown = null;
+  });
+  picker.addEventListener("click", e => {
+    armPickerTimeout();
+    const tb = e.target.closest(".tb");
+    if (tb) {
+      stored = tb.dataset.theme;
+      try { localStorage.setItem("edge-dash.theme", stored); } catch (_) {}
+      applyTheme(stored);
+      openPicker();                                 // re-render with the new selection
+      return;
+    }
+    if (e.target.closest(".reset")) {
+      stored = null;
+      try { localStorage.removeItem("edge-dash.theme"); } catch (_) {}
+      applyTheme(DEFAULT_THEME);
+      openPicker();
+      return;
+    }
+    if (e.target.closest(".close") || e.target === picker) closePicker();
+  });
+
+  applyTheme(THEME);
+  if (PARAMS.get("picker")) setTimeout(openPicker, 1500);   // ?picker=1 opens it on load (screenshots)
 
   const rnd = (a, b) => a + Math.random() * (b - a);
   function spawnParticles(p) {

@@ -1,1 +1,11 @@
-{ "name": "Phosphor", "particles": { "count": 0 } }
+{
+  "name": "Phosphor",
+  "particles": {
+    "count": 0
+  },
+  "swatch": [
+    "#020803",
+    "#4dff7a",
+    "#b6ffcb"
+  ]
+}

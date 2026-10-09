@@ -11,8 +11,15 @@ themes/<name>/
 ```
 
 Pick a theme with `./install.sh --theme=<name>` (or `./edge-dash.sh --theme=<name>` by
-hand). The default is `tokyo`. `themes/minimal` is the smallest working theme: copy
-it, rename it, start editing.
+hand), or tap the hidden top-left corner of the panel for the picker. The default is
+`tokyo`. `themes/minimal` is the smallest working theme: copy it, rename it, start editing.
+
+**Register it** by adding the folder name to `themes/themes.json` so the picker lists it,
+and give `theme.json` a `swatch` of two or three colours for the picker's tile:
+
+```json
+{ "name": "My Theme", "swatch": ["#101418", "#ff6ec7", "#5ee7ff"], "particles": { "count": 0 } }
+```
 
 ## 1. `theme.css` — the tokens
 
@@ -77,7 +84,7 @@ and calendar. Things to know about the layout it sits under:
 }
 ```
 
-`count` particles are spawned, each a single SVG `path` (in `viewBox` units) filled
+`name` is shown in the picker and `swatch` colours its tile. `count` particles are spawned, each a single SVG `path` (in `viewBox` units) filled
 and stroked with one of the `[fill, stroke]` pairs, sized between `size[0]` and
 `size[1]` px. They fall for `fall` seconds, sway sideways on a `sway`-second cycle and
 rotate once per `spin` seconds; every range is `[min, max]` and picked per particle.

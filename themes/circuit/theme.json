@@ -1,1 +1,11 @@
-{ "name": "Circuit", "particles": { "count": 0 } }
+{
+  "name": "Circuit",
+  "particles": {
+    "count": 0
+  },
+  "swatch": [
+    "#061a14",
+    "#b87333",
+    "#f2c14e"
+  ]
+}

@@ -38,8 +38,8 @@ an optional particle config. `tokyo` (default) and `minimal` ship in `themes/`; 
 ## Install
 
 ```sh
-git clone https://github.com/<you>/edge-dash ~/projects/edge-dash
-cd ~/projects/edge-dash
+git clone https://github.com/mrpestka/xeneon-edge-dash ~/projects/xeneon-edge-dash
+cd ~/projects/xeneon-edge-dash
 ./install.sh                 # --output=DP-4 if auto-detection picks the wrong screen, --theme=minimal to switch themes
 ```
 

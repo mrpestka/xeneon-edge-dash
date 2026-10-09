@@ -286,13 +286,26 @@
   function closePicker() { picker.classList.remove("show"); clearTimeout(pickerTimer); }
   function armPickerTimeout() { clearTimeout(pickerTimer); pickerTimer = setTimeout(closePicker, 20000); }
 
-  // a tap (press + release without dragging) on the corner opens it
-  let cornerDown = null;
-  $("corner").addEventListener("pointerdown", e => { cornerDown = [e.clientX, e.clientY]; });
-  $("corner").addEventListener("pointerup", e => {
-    if (cornerDown && Math.hypot(e.clientX - cornerDown[0], e.clientY - cornerDown[1]) < 24) openPicker();
+  // a tap on the corner opens it. Touch may arrive as pointer events or as a synthesised
+  // click depending on the input path, so accept either (de-duplicated with a short guard).
+  const corner = $("corner");
+  let cornerDown = null, lastOpen = 0;
+  const tapped = e => {
+    if (Date.now() - lastOpen < 600) return;
+    lastOpen = Date.now();
+    const ring = document.createElement("i");           // brief ripple so a hidden control still acknowledges the tap
+    ring.className = "tapring"; ring.style.left = (e.clientX || 60) + "px"; ring.style.top = (e.clientY || 60) + "px";
+    document.body.appendChild(ring); setTimeout(() => ring.remove(), 700);
+    openPicker();
+  };
+  corner.addEventListener("pointerdown", e => { cornerDown = [e.clientX, e.clientY]; e.preventDefault(); });
+  corner.addEventListener("pointerup", e => {
+    if (cornerDown && Math.hypot(e.clientX - cornerDown[0], e.clientY - cornerDown[1]) < 40) tapped(e);
     cornerDown = null;
   });
+  corner.addEventListener("pointercancel", () => { cornerDown = null; });
+  corner.addEventListener("click", tapped);
+  corner.addEventListener("touchend", e => { e.preventDefault(); const t = e.changedTouches[0]; tapped({ clientX: t.clientX, clientY: t.clientY }); }, { passive: false });
   picker.addEventListener("click", e => {
     armPickerTimeout();
     const tb = e.target.closest(".tb");

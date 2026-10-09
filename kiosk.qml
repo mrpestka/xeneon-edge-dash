@@ -68,7 +68,7 @@ Window {
 
     // A named, on-disk profile: the stock QML default profile is off-the-record, which
     // would forget the theme picked on the panel at every restart.
-    WebEngineProfile { id: profile; storageName: "edge-dash"; offTheRecord: false }
+    WebEngineProfile { id: profile; offTheRecord: false; storageName: "edge-dash" }
 
     WebEngineView {
         id: view
@@ -80,6 +80,9 @@ Window {
         settings.localContentCanAccessRemoteUrls: true   // lets index.html pull remote iframes/APIs if you add any
         settings.localContentCanAccessFileUrls: true     // index.html reads schedule.json over XHR
         onContextMenuRequested: function(request) { request.accepted = true }
+        onJavaScriptConsoleMessage: function(level, message, line, source) {
+            console.warn("page:", message, "(" + source.split("/").pop() + ":" + line + ")")
+        }
         onLoadingChanged: function(info) {
             if (info.status === WebEngineView.LoadFailedStatus)
                 console.warn("edge-dash: load failed", info.errorString)

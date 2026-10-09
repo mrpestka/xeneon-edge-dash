@@ -120,7 +120,10 @@ body.holding #clock { opacity: 0; }   /* the panel's right edge fades, so hide t
 #sched .foot { font-size: 22px; color: var(--muted); letter-spacing: .06em; margin-top: 14px; }
 
 /* ---- hidden corner touchpoint + theme picker ---- */
-#corner { position: absolute; left: 0; top: 0; width: 180px; height: 180px; z-index: 4; }
+#corner { position: absolute; left: 0; top: 0; width: 260px; height: 220px; z-index: 4; touch-action: none; }
+.tapring { position: absolute; z-index: 6; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; pointer-events: none;
+  border: 3px solid var(--accent); animation: tapring .6s ease-out forwards; }
+@keyframes tapring { from { transform: scale(.6); opacity: .9; } to { transform: scale(3.2); opacity: 0; } }
 #picker { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center;
   background: rgba(0, 0, 0, .55); opacity: 0; pointer-events: none; transition: opacity .15s ease; }
 #picker.show { opacity: 1; pointer-events: auto; }

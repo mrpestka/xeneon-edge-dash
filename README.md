@@ -15,8 +15,9 @@ and drifting petals.
 - **24-hour clock** with seconds, date, ISO week and day of year.
 - **Month calendar**, Sunday or Monday start, always at least five full weeks
   (six when needed), padded with the neighbouring months' days (or blank leading cells,
-  one flag); today highlighted. **Swipe left/right** to page through months; it snaps
-  back to the current month after a minute and a half idle.
+  one flag); today highlighted. **Swipe left/right** to page through months; a **Today**
+  button appears beside the month name while you're away, and the view snaps back on
+  its own after a minute and a half idle.
 - **Calendar feeds**: a small fetcher merges ICS feeds into `schedule.json` every
   15 minutes. Days with events get a dot per calendar; **hold a day** and the clock
   side swaps to that day's agenda, release to go back.
@@ -105,8 +106,8 @@ journalctl --user -u edge-dash -u edge-schedule -f
 ```
 
 Keys while the kiosk has focus: `Esc` quit, `F5` reload, `F12` screenshot.
-Touch: hold a day for its agenda; swipe left/right to change month; tap the top-left
-corner for the theme picker.
+Touch: hold a day for its agenda; swipe left/right to change month (tap **Today** to
+jump back); tap the top-left corner for the theme picker.
 
 ## Customising
 

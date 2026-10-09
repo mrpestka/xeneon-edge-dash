@@ -41,7 +41,10 @@
   </aside>
 
   <section id="cal">
-    <div id="calhead"><div id="month"></div><div id="year"></div></div>
+    <div id="calhead">
+      <div class="left"><div id="month"></div><button id="today" type="button">Today</button></div>
+      <div id="year"></div>
+    </div>
     <div id="grid"></div>
   </section>
 
@@ -117,6 +120,7 @@
 
     $("month").textContent = MONTHS[m];
     $("year").textContent = y;
+    $("today").classList.toggle("show", monthOffset !== 0);
 
     const first = new Date(y, m, 1);
     const offset = (first.getDay() - WEEK_START + 7) % 7;
@@ -232,15 +236,20 @@
   let press = null;                           // { x, y, id, cell, timer, swiped }
   let returnTimer = null;
 
-  function changeMonth(dir) {
-    monthOffset += dir;
+  function showMonth(offset) {
+    const dir = Math.sign(offset - monthOffset);
+    monthOffset = offset;
     renderCalendar(new Date(), true);
-    grid.classList.remove("slide-left", "slide-right");
-    void grid.offsetWidth;                    // restart the animation
-    grid.classList.add(dir > 0 ? "slide-left" : "slide-right");
+    if (dir) {
+      grid.classList.remove("slide-left", "slide-right");
+      void grid.offsetWidth;                  // restart the animation
+      grid.classList.add(dir > 0 ? "slide-left" : "slide-right");
+    }
     clearTimeout(returnTimer);
-    if (monthOffset !== 0) returnTimer = setTimeout(() => { monthOffset = 0; renderCalendar(new Date(), true); }, RETURN_TO_TODAY_MS);
+    if (monthOffset !== 0) returnTimer = setTimeout(() => showMonth(0), RETURN_TO_TODAY_MS);
   }
+  const changeMonth = dir => showMonth(monthOffset + dir);
+  $("today").addEventListener("click", () => showMonth(0));
 
   function endPress() {
     if (!press) return;
@@ -251,6 +260,7 @@
 
   cal.addEventListener("pointerdown", e => {
     if (!e.isPrimary) return;
+    if (e.target.closest("#today")) return;   // leave the button's click alone
     e.preventDefault();
     endPress();
     const cell = e.target.closest("#grid .day");

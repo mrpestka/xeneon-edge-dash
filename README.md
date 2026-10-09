@@ -21,7 +21,9 @@ and drifting petals.
 - **Kiosk**: a fullscreen QtWebEngine window that pins itself to the Edge's output and
   re-pins on hotplug. No browser profile, no Electron, no build step.
 
-Everything is one HTML page plus a 70-line QML wrapper, so restyling is editing CSS.
+**Themes** are drop-in folders: a CSS token file, an optional 2560×720 SVG scene and
+an optional particle config. `tokyo` (default) and `minimal` ship in `themes/`; see
+[THEMES.md](THEMES.md) to make your own without touching the logic.
 
 ## Requirements
 
@@ -38,7 +40,7 @@ Everything is one HTML page plus a 70-line QML wrapper, so restyling is editing 
 ```sh
 git clone https://github.com/<you>/edge-dash ~/projects/edge-dash
 cd ~/projects/edge-dash
-./install.sh                 # add --output=DP-4 if auto-detection picks the wrong screen
+./install.sh                 # --output=DP-4 if auto-detection picks the wrong screen, --theme=minimal to switch themes
 ```
 
 The installer renders the systemd user units with this checkout's path, enables
@@ -81,16 +83,21 @@ Keys while the kiosk has focus: `Esc` quit, `F5` reload, `F12` screenshot.
 
 | What | Where |
 |------|-------|
-| Colours | `:root` tokens at the top of `index.html`; scene colours on the inline `<svg id="scene">` |
-| Week start, min. weeks, refresh interval, petal count | the `settings` block at the top of the script in `index.html` |
-| Fuji / sun / torii / hills | the `<svg id="scene">` paths (2560×720 coordinate space) |
+| Colours, cards, fonts | `themes/<name>/theme.css` tokens (contract in THEMES.md) |
+| Artwork | `themes/<name>/scene.svg`, 2560×720 |
+| Petals / snow / particles | `themes/<name>/theme.json` |
+| Week start, min. weeks, refresh interval | the `settings` block at the top of the script in `index.html` |
 | Which screen | `./install.sh --output=NAME`, or any 2560×720 screen by default |
 | Feed range / timezone | `past_days`, `future_days`, `timezone` in `calendars.toml` |
 
 ## Layout
 
 ```
-index.html             the page: clock, calendar, scene, petals, hold-to-view panel
+index.html             the page: clock, calendar, hold-to-view panel, theme loader
+base.css               layout + token defaults (the theme contract)
+themes/tokyo/          default theme: theme.css, scene.svg, theme.json
+themes/minimal/        bare dark theme, the starting point for your own
+THEMES.md              how to write a theme
 kiosk.qml              fullscreen QtWebEngine window pinned to the Edge
 edge-dash.sh           launcher (qml6)
 fetch_schedule.py      ICS feeds -> schedule.json (uv script, deps inline)
@@ -104,8 +111,8 @@ calendars.example.toml feed config template
 The Edge shows up as a plain 2560×720 DisplayPort monitor over USB-C (EDID name
 `XENEON EDGE`) plus a USB touch digitizer `27c0:0859 "wch.cn TouchScreen"`.
 Brightness is on a separate USB HID channel that iCUE uses; DDC/CI does not answer.
-Any other 2560×720 panel works unchanged; for other sizes adjust the fixed
-`2560px`/`720px` in the CSS and `targetW`/`targetH` in `kiosk.qml`.
+Any other 2560×720 panel works unchanged; for other sizes adjust `--panel-w`/`--panel-h`
+in `base.css` and `targetW`/`targetH` in `kiosk.qml`.
 
 ## License
 

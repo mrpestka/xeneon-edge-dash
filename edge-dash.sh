@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Launch the Edge Dash kiosk with the stock Qt 6 "qml6" runtime (no build step).
-#   ./edge-dash.sh [--output=DP-4] [--hold=YYYY-MM-DD] [--shot]
+#   ./edge-dash.sh [--output=DP-4] [--theme=tokyo] [--hold=YYYY-MM-DD] [--shot]
 set -euo pipefail
 cd "$(dirname "$(readlink -f "$0")")"
 export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-wayland}"

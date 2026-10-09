@@ -1,0 +1,28 @@
+/* Minimal — a plain dark theme with no scene and no particles. Copy this folder to
+   start your own: edit the tokens, add a scene.svg (2560x720) if you want artwork. */
+:root {
+  --bg: #0f1216;
+  --bg-2: #161b21;
+  --text: #e9edf2;
+  --text-2: #aeb7c2;
+  --accent: #ffb454;
+  --accent-2: #6fb6e6;
+  --muted: #6f7a87;
+  --dim: #343c46;
+  --line: #262d36;
+
+  --card-bg: #1a2028;
+  --card-edge: #262d36;
+  --card-text: #e9edf2;
+  --card-weekend-bg: #1c232d;
+  --card-weekend-edge: #2c3744;
+  --card-weekend-text: #c9d6e6;
+
+  --today-bg: #ffb454;
+  --today-text: #141414;
+  --today-edge: #e09a3a;
+  --today-shadow: 0 6px 18px rgba(255, 180, 84, .3);
+
+  --panel-bg: linear-gradient(90deg, #0f1216 0%, #0f1216 84%, transparent 100%);
+  --ev-bg: #1a2028;
+}

@@ -1,0 +1,117 @@
+/* Edge Dash — structure and neutral defaults. Themes override the tokens in :root
+   (see THEMES.md) and should rarely need to touch the rules below. */
+:root {
+  /* layout */
+  --panel-w: 2560px;
+  --panel-h: 720px;
+  --clock-w: 1180px;            /* the calendar takes the rest */
+  --clock-pad: 40px 60px 40px 110px;
+  --font: "Fira Sans", "Noto Sans", system-ui, sans-serif;
+
+  /* neutral grey defaults — every theme replaces these */
+  --bg: #15181d;
+  --bg-2: #1c2026;
+  --text: #e8ebef;              /* clock digits, day numbers */
+  --text-2: #b7bec8;            /* date line, year, times */
+  --accent: #ffffff;            /* colon, weekday name, month, weekday headers, today */
+  --accent-2: #9aa7b8;          /* seconds, weekend headers, padded-month tags */
+  --muted: #7d8794;
+  --dim: #454d58;
+  --line: #2a3139;
+
+  --card-bg: #1f252c;
+  --card-edge: #2a3139;         /* bottom edge of a day card */
+  --card-text: var(--text);
+  --card-shadow: none;
+  --card-weekend-bg: #232a32;
+  --card-weekend-edge: #313a44;
+  --card-weekend-text: var(--text);
+  --card-weekend-line: var(--line);
+
+  --today-bg: var(--accent);
+  --today-text: #15181d;
+  --today-edge: var(--accent);
+  --today-shadow: none;
+
+  --panel-bg: linear-gradient(90deg, var(--bg) 0%, var(--bg) 84%, transparent 100%);
+  --ev-bg: #1f252c;
+  --scene-dim: .18;             /* scene + particles opacity while a day is held */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: var(--panel-w); height: var(--panel-h); overflow: hidden; color: var(--text);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  font-family: var(--font); cursor: none; user-select: none; }
+body { display: grid; grid-template-columns: var(--clock-w) 1fr; position: relative; }
+#clock, #cal { position: relative; z-index: 1; }
+
+/* ---- theme layers: scene (static SVG) and particles (animated) ---- */
+#scene, #particles { position: absolute; inset: 0; z-index: 0; pointer-events: none; transition: opacity .2s ease; }
+#scene > svg { display: block; width: 100%; height: 100%; }
+#particles { overflow: hidden; }
+body.holding #scene, body.holding #particles { opacity: var(--scene-dim); }
+.particle { position: absolute; top: -60px; opacity: 0;
+  animation: fall linear infinite, sway ease-in-out infinite alternate; will-change: transform; }
+.particle svg { width: 100%; height: 100%; display: block; animation: spin linear infinite; }
+@keyframes fall { 0% { transform: translateY(-80px); opacity: 0; } 8% { opacity: var(--o, .7); }
+  92% { opacity: var(--o, .7); } 100% { transform: translateY(calc(var(--panel-h) + 100px)); opacity: 0; } }
+@keyframes sway { from { margin-left: -70px; } to { margin-left: 70px; } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ---- clock ---- */
+#clock { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: var(--clock-pad); }
+#time { font-size: 330px; line-height: 0.9; font-weight: 300; letter-spacing: -0.02em; color: var(--text);
+  font-variant-numeric: tabular-nums; display: flex; align-items: baseline; }
+#time .colon { color: var(--accent); opacity: 0.95; }
+#time .colon.off { opacity: 0.25; }
+#secs { font-size: 96px; font-weight: 300; color: var(--accent-2); margin-left: 28px; font-variant-numeric: tabular-nums; }
+#date { margin-top: 44px; font-size: 56px; font-weight: 400; color: var(--text-2); letter-spacing: 0.01em; }
+#date b { color: var(--accent); font-weight: 500; }
+#sub { margin-top: 10px; font-size: 32px; color: var(--muted); letter-spacing: 0.04em; }
+
+/* ---- calendar ---- */
+#cal { display: flex; flex-direction: column; padding: 30px 48px 30px 20px; }
+#calhead { display: flex; align-items: baseline; justify-content: space-between; padding: 0 10px 10px; }
+#month { font-size: 60px; font-weight: 500; color: var(--accent); }
+#year { font-size: 44px; color: var(--text-2); font-weight: 300; }
+#grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-auto-rows: 1fr; gap: 6px; touch-action: none; }
+#grid .dow { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px;
+  font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+#grid .dow.wkend { color: var(--accent-2); }
+#grid .day { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  font-size: 40px; font-weight: 400; border-radius: 12px; background: var(--card-bg); color: var(--card-text);
+  border: 1px solid var(--line); border-bottom: 4px solid var(--card-edge); font-variant-numeric: tabular-nums;
+  box-shadow: var(--card-shadow); transition: transform .08s ease, filter .08s ease; }
+#grid .day.weekend { background: var(--card-weekend-bg); border-color: var(--card-weekend-line); border-bottom-color: var(--card-weekend-edge); color: var(--card-weekend-text); }
+#grid .day.other { color: var(--dim); background: transparent; border-color: transparent; box-shadow: none; }
+#grid .day.past:not(.other) { color: var(--muted); }
+#grid .day.today { color: var(--today-text); background: var(--today-bg); border-color: var(--today-edge);
+  border-bottom-color: var(--today-edge); font-weight: 600; box-shadow: var(--today-shadow); }
+#grid .day.held { transform: scale(.96); filter: brightness(.96); }
+#grid .day .m { position: absolute; top: 6px; left: 10px; font-size: 18px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent-2); }
+#grid .day.today .m { color: var(--today-text); opacity: .8; }
+#grid .day .dots { position: absolute; bottom: 7px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; }
+#grid .day .dots i { display: block; width: 9px; height: 9px; border-radius: 50%; }
+#grid .day.today .dots i { background: var(--today-text) !important; opacity: .9; }
+#grid .day.other .dots i { opacity: .45; }
+
+/* ---- schedule panel (covers the clock while a day is held) ---- */
+#sched { position: absolute; left: 0; top: 0; width: var(--clock-w); height: var(--panel-h); z-index: 2;
+  padding: 44px 40px 36px 110px; display: flex; flex-direction: column; background: var(--panel-bg);
+  opacity: 0; pointer-events: none; transition: opacity .15s ease; }
+#sched.show { opacity: 1; }
+#sched .head { display: flex; align-items: baseline; gap: 22px; margin-bottom: 22px; }
+#sched .head .dow { font-size: 64px; font-weight: 500; color: var(--accent); }
+#sched .head .dt { font-size: 44px; font-weight: 300; color: var(--text-2); }
+#sched .list { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+#sched .ev { display: grid; grid-template-columns: 250px 8px 1fr; column-gap: 18px; align-items: center;
+  background: var(--ev-bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 18px; min-height: 74px; }
+#sched .ev .when { font-size: 30px; color: var(--text); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+#sched .ev .when small { display: block; font-size: 20px; color: var(--muted); letter-spacing: .08em; }
+#sched .ev .bar { width: 8px; height: 52px; border-radius: 4px; }
+#sched .ev .what { font-size: 32px; color: var(--text); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+#sched .ev .what small { display: block; font-size: 22px; color: var(--muted); }
+#sched .empty { font-size: 36px; color: var(--muted); padding: 30px 0; }
+#sched .more { font-size: 26px; color: var(--accent); padding: 6px 18px; }
+#sched .foot { font-size: 22px; color: var(--muted); letter-spacing: .06em; margin-top: 14px; }

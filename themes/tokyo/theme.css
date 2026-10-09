@@ -1,0 +1,31 @@
+/* Tokyo — after the Akko "World Tour Tokyo" keycap set: cream caps, sakura pink,
+   magenta legends, Fuji blue, hiragana light blue. Scene: Mt Fuji, red sun, torii,
+   pink hills, blossom branches (scene.svg); drifting petals (theme.json). */
+:root {
+  --bg: #faf4ec;
+  --bg-2: #f6ede3;
+  --text: #2b4f94;              /* Fuji blue */
+  --text-2: #3466b5;
+  --accent: #e8457a;            /* keycap legend magenta */
+  --accent-2: #7fbbe9;          /* hiragana blue */
+  --muted: #8d7d84;
+  --dim: #cfc0c6;
+  --line: #f3dbe3;
+
+  --card-bg: rgba(255, 255, 255, .92);
+  --card-edge: #fbd9e3;         /* keycap-style sakura bottom edge */
+  --card-text: #244d93;
+  --card-shadow: 0 3px 8px rgba(120, 60, 80, .08);
+  --card-weekend-bg: #e4f1fb;
+  --card-weekend-edge: #a9d6f2;
+  --card-weekend-text: #3466b5;
+  --card-weekend-line: #d3e7f6;
+
+  --today-bg: linear-gradient(160deg, #f06a98 0%, #e8457a 100%);
+  --today-text: #fff;
+  --today-edge: #c92f64;
+  --today-shadow: 0 6px 18px rgba(232, 69, 122, .35);
+
+  --panel-bg: linear-gradient(90deg, #faf4ec 0%, #faf4ec 84%, rgba(250, 244, 236, 0) 100%);
+  --ev-bg: rgba(255, 255, 255, .9);
+}

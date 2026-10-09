@@ -3,168 +3,19 @@
 <head>
 <meta charset="utf-8">
 <title>Edge Dash</title>
-<style>
-  :root {
-    /* Palette inspired by the Akko "World Tour Tokyo" keycap set:
-       cream caps, sakura pink, magenta legends, Fuji blue, hiragana light blue.
-       The Fuji / sun / hills / torii colours live on the inline <svg id="scene"> below. */
-    --cream: #faf4ec;
-    --cream2: #f6ede3;
-    --fg: #2b4f94;          /* Fuji blue, for the big digits */
-    --fuji: #3466b5;
-    --fuji-deep: #244d93;
-    --magenta: #e8457a;     /* keycap legend pink */
-    --pink-soft: #fbd9e3;   /* keycap-style bottom edge on day cards */
-    --sky: #7fbbe9;         /* hiragana blue */
-    --sky-soft: #e4f1fb;
-    --cloud: #a9d6f2;
-    --muted: #8d7d84;
-    --dim: #cfc0c6;
-    --line: #f3dbe3;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 2560px; height: 720px; overflow: hidden; color: var(--fg);
-    background: linear-gradient(180deg, var(--cream) 0%, var(--cream2) 100%);
-    font-family: "Fira Sans", "Noto Sans", sans-serif; cursor: none; user-select: none; }
-  body { display: grid; grid-template-columns: 1180px 1380px; position: relative; }
-  #clock, #cal { position: relative; z-index: 1; }
-
-  /* ---- petals ---- */
-  #scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-  #petals { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .petal { position: absolute; top: -60px; width: 34px; height: 34px; opacity: 0;
-    animation: fall linear infinite, sway ease-in-out infinite alternate; will-change: transform; }
-  .petal svg { width: 100%; height: 100%; display: block; animation: spin linear infinite; }
-  @keyframes fall { 0% { transform: translateY(-80px); opacity: 0; } 8% { opacity: var(--o, .7); }
-    92% { opacity: var(--o, .7); } 100% { transform: translateY(820px); opacity: 0; } }
-  @keyframes sway { from { margin-left: -70px; } to { margin-left: 70px; } }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  /* a static branch of blossoms tucked into the corners */
-  .branch { position: absolute; z-index: 0; pointer-events: none; opacity: .9; }
-
-  /* ---- clock ---- */
-  #clock { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 40px 60px 40px 110px; }
-  #time { font-size: 330px; line-height: 0.9; font-weight: 300; letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums; display: flex; align-items: baseline; }
-  #time { color: var(--fg); }
-  #time .colon { color: var(--magenta); opacity: 0.95; }
-  #time .colon.off { opacity: 0.25; }
-  #secs { font-size: 96px; font-weight: 300; color: var(--sky); margin-left: 28px; font-variant-numeric: tabular-nums; }
-  #date { margin-top: 44px; font-size: 56px; font-weight: 400; color: var(--fuji); letter-spacing: 0.01em; }
-  #date b { color: var(--magenta); font-weight: 500; }
-  #sub { margin-top: 10px; font-size: 32px; color: var(--muted); letter-spacing: 0.04em; }
-
-  /* ---- calendar ---- */
-  #cal { display: flex; flex-direction: column; padding: 30px 48px 30px 20px; }
-  #calhead { display: flex; align-items: baseline; justify-content: space-between; padding: 0 10px 10px; }
-  #month { font-size: 60px; font-weight: 500; color: var(--magenta); }
-  #year { font-size: 44px; color: var(--fuji); font-weight: 300; }
-  #grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: 1fr; gap: 6px; touch-action: none; }
-  #grid .day { cursor: pointer; transition: transform .08s ease, filter .08s ease; }
-  #grid .day.held { transform: scale(.96); filter: brightness(.96); }
-  #grid .day .dots { position: absolute; bottom: 7px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; }
-  #grid .day .dots i { display: block; width: 9px; height: 9px; border-radius: 50%; }
-  #grid .day.today .dots i { background: #fff !important; opacity: .9; }
-  #grid .day.other .dots i { opacity: .45; }
-
-  /* ---- schedule overlay (left panel, shown while a day is held) ---- */
-  #sched { position: absolute; left: 0; top: 0; width: 1180px; height: 720px; z-index: 2;
-    padding: 44px 40px 36px 110px; display: flex; flex-direction: column;
-    background: linear-gradient(90deg, var(--cream) 0%, var(--cream) 84%, rgba(250,244,236,0) 100%);
-    opacity: 0; pointer-events: none; transition: opacity .15s ease; }
-  #sched.show { opacity: 1; }
-  #scene, .branch, #petals { transition: opacity .2s ease; }
-  body.holding #scene, body.holding .branch, body.holding #petals { opacity: .18; }
-  #sched .head { display: flex; align-items: baseline; gap: 22px; margin-bottom: 22px; }
-  #sched .head .dow { font-size: 64px; font-weight: 500; color: var(--magenta); }
-  #sched .head .dt { font-size: 44px; font-weight: 300; color: var(--fuji); }
-  #sched .list { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
-  #sched .ev { display: grid; grid-template-columns: 250px 8px 1fr; column-gap: 18px; align-items: center;
-    background: rgba(255,255,255,.9); border: 1px solid var(--line); border-radius: 12px; padding: 10px 18px; min-height: 74px; }
-  #sched .ev .when { font-size: 30px; color: var(--fuji-deep); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
-  #sched .ev .when small { display: block; font-size: 20px; color: var(--muted); letter-spacing: .08em; }
-  #sched .ev .bar { width: 8px; height: 52px; border-radius: 4px; }
-  #sched .ev .what { font-size: 32px; color: var(--fuji-deep); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  #sched .ev .what small { display: block; font-size: 22px; color: var(--muted); }
-  #sched .empty { font-size: 36px; color: var(--muted); padding: 30px 0; }
-  #sched .more { font-size: 26px; color: var(--magenta); padding: 6px 18px; }
-  #sched .foot { font-size: 22px; color: var(--muted); letter-spacing: .06em; margin-top: 14px; }
-  #grid .dow { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px;
-    font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--magenta); }
-  #grid .dow.wkend { color: var(--sky); }
-  #grid .day { position: relative; display: flex; align-items: center; justify-content: center;
-    font-size: 40px; font-weight: 400; border-radius: 12px; background: rgba(255,255,255,.92);
-    border: 1px solid var(--line); border-bottom: 4px solid var(--pink-soft); font-variant-numeric: tabular-nums;
-    color: var(--fuji-deep); box-shadow: 0 3px 8px rgba(120, 60, 80, 0.08); }
-  #grid .day.weekend { background: var(--sky-soft); border-color: #d3e7f6; border-bottom-color: var(--cloud); color: var(--fuji); }
-  #grid .day.other { color: var(--dim); background: transparent; border-color: transparent; box-shadow: none; }
-  #grid .day.today { color: #fff; background: linear-gradient(160deg, #f06a98 0%, var(--magenta) 100%);
-    border-color: var(--magenta); border-bottom-color: #c92f64; font-weight: 600; box-shadow: 0 6px 18px rgba(232, 69, 122, 0.35); }
-  #grid .day.past:not(.other) { color: var(--muted); }
-  #grid .day .m { position: absolute; top: 6px; left: 10px; font-size: 18px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--sky); }
-  #grid .day.today .m { color: rgba(255,255,255,.8); }
-</style>
+<link rel="stylesheet" href="base.css">
+<script>
+  // Theme = themes/<name>/{theme.css, scene.svg, theme.json}. Chosen with ?theme=<name>
+  // (the kiosk passes --theme through). See THEMES.md.
+  const PARAMS = new URLSearchParams(location.search);
+  const THEME = (PARAMS.get("theme") || "tokyo").replace(/[^a-z0-9_-]/gi, "");
+  document.write(`<link rel="stylesheet" href="themes/${THEME}/theme.css">`);
+</script>
 </head>
 <body>
-  <svg id="scene" viewBox="0 0 2560 720" width="2560" height="720">
-    <!-- sun + clouds -->
-    <circle cx="1075" cy="150" r="58" fill="#d6352f"/>
-    <g fill="#a9d6f2">
-      <ellipse cx="860" cy="262" rx="54" ry="18"/><ellipse cx="888" cy="248" rx="34" ry="22"/><ellipse cx="838" cy="252" rx="28" ry="18"/>
-      <ellipse cx="1130" cy="330" rx="52" ry="16"/><ellipse cx="1148" cy="318" rx="30" ry="20"/><ellipse cx="1108" cy="320" rx="24" ry="16"/>
-      <ellipse cx="820" cy="470" rx="46" ry="14"/><ellipse cx="840" cy="460" rx="26" ry="16"/>
-    </g>
-    <!-- Fuji -->
-    <path d="M740 600 L 980 390 L 1220 600 Z" fill="#3466b5"/>
-    <path d="M980 390 L 1220 600 L 1070 600 Z" fill="#244d93" opacity=".55"/>
-    <path d="M980 390 L 1040 443 C 1030 438, 1022 452, 1012 443 C 1002 454, 994 438, 984 447 C 974 438, 966 454, 956 443 C 946 452, 938 438, 928 443 Z" fill="#fbf7f1"/>
-    <!-- rolling hills -->
-    <path d="M0 640 C 240 580, 420 660, 700 612 S 1150 560, 1400 618 S 1850 660, 2100 606 S 2420 600, 2560 622 L 2560 720 L 0 720 Z" fill="#f5a3c0"/>
-    <path d="M0 672 C 220 630, 480 690, 760 650 S 1200 620, 1480 662 S 1900 690, 2200 648 S 2460 640, 2560 660 L 2560 720 L 0 720 Z" fill="#f07aa5"/>
-    <path d="M0 700 C 300 676, 600 712, 900 690 S 1500 668, 1800 696 S 2300 712, 2560 692 L 2560 720 L 0 720 Z" fill="#e9558a"/>
-    <!-- torii in front of the hills, posts running off the bottom edge -->
-    <g transform="translate(10, 50)">
-      <!-- ripple at the water line -->
-      <path d="M760 648 Q 810 640 860 648" stroke="#c92f64" stroke-width="3" fill="none" opacity=".6"/>
-      <!-- posts (hashira) -->
-      <rect x="740" y="520" width="16" height="200" fill="#d6352f"/>
-      <rect x="864" y="520" width="16" height="200" fill="#d6352f"/>
-      <!-- post shading -->
-      <rect x="750" y="520" width="6" height="200" fill="#b52a28"/>
-      <rect x="874" y="520" width="6" height="200" fill="#b52a28"/>
-      <!-- nemaki (dark wraps at the foot) -->
-      <rect x="737" y="640" width="22" height="34" fill="#2b2b33"/>
-      <rect x="861" y="640" width="22" height="34" fill="#2b2b33"/>
-      <!-- nuki (tie beam) -->
-      <rect x="716" y="562" width="188" height="14" fill="#d6352f"/>
-      <rect x="716" y="572" width="188" height="4" fill="#b52a28"/>
-      <!-- gakuzuka (name tablet) -->
-      <rect x="798" y="524" width="24" height="38" fill="#fbf7f1" stroke="#2b2b33" stroke-width="2"/>
-      <rect x="804" y="531" width="12" height="4" fill="#2b2b33"/><rect x="804" y="539" width="12" height="4" fill="#2b2b33"/><rect x="804" y="547" width="12" height="4" fill="#2b2b33"/>
-      <!-- kusabi (wedges) -->
-      <rect x="744" y="526" width="8" height="14" fill="#2b2b33"/>
-      <rect x="868" y="526" width="8" height="14" fill="#2b2b33"/>
-      <!-- shimaki (straight upper beam) -->
-      <rect x="708" y="508" width="204" height="12" fill="#d6352f"/>
-      <!-- kasagi (curved cap) with a dark roof edge -->
-      <path d="M700 494 Q 810 470 920 494 L 920 508 L 700 508 Z" fill="#d6352f"/>
-      <path d="M700 494 Q 810 470 920 494 L 920 500 Q 810 478 700 500 Z" fill="#2b2b33"/>
-    </g>
-  </svg>
-  <div id="petals"></div>
-  <svg class="branch" style="left:-40px; bottom:-30px; width:330px; height:175px" viewBox="0 0 520 300" fill="none">
-    <path d="M-10 290 C 90 250, 150 230, 240 150 S 380 60, 470 30" stroke="#6b4636" stroke-width="7" stroke-linecap="round"/>
-    <path d="M240 150 C 230 120, 260 95, 300 100" stroke="#6b4636" stroke-width="4" stroke-linecap="round"/>
-    <path d="M150 220 C 160 190, 140 170, 120 160" stroke="#6b4636" stroke-width="4" stroke-linecap="round"/>
-    <g id="blossoms"></g>
-  </svg>
-  <svg class="branch" style="left:-30px; top:-100px; width:440px; height:230px; transform: scaleX(-1)" viewBox="0 0 420 220" fill="none">
-    <path d="M430 -10 C 360 50, 300 70, 220 120 S 90 170, 20 210" stroke="#6b4636" stroke-width="6" stroke-linecap="round"/>
-    <path d="M220 120 C 240 150, 230 170, 200 180" stroke="#6b4636" stroke-width="3.5" stroke-linecap="round"/>
-    <g id="blossoms2"></g>
-  </svg>
+  <div id="scene"></div>
+  <div id="particles"></div>
+
   <section id="clock">
     <div id="time">
       <span id="hh">--</span><span class="colon">:</span><span id="mm">--</span>
@@ -187,17 +38,31 @@
 
 <script>
   // ---- settings ----
-  const WEEK_START = 0;                  // 0 = Sunday, 1 = Monday
-  const MIN_WEEKS = 5;                   // always show at least this many week rows (6 when the month needs it)
+  const WEEK_START = 0;                       // 0 = Sunday, 1 = Monday
+  const MIN_WEEKS = 5;                        // at least this many week rows (6 when the month needs it)
   const SCHEDULE_REFRESH_MS = 5 * 60 * 1000;  // how often to re-read schedule.json
-  const MAX_EVENTS_SHOWN = 6;            // rows in the held-day panel before "+N more"
-  const PETAL_COUNT = 22;
+  const MAX_EVENTS_SHOWN = 6;                 // rows in the held-day panel before "+N more"
+
   const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const DOW_LONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const MON_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
+  const $ = id => document.getElementById(id);
   const pad = n => String(n).padStart(2, "0");
-  const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  const esc = str => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const isoDay = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const sameDay = (a, b) => isoDay(a) === isoDay(b);
+  const hhmm = iso => iso.slice(11, 16);
+
+  // Local files over XHR: Chromium refuses fetch() on file:// but QtWebEngine allows XHR.
+  function getLocal(path, onload, onerror) {
+    const x = new XMLHttpRequest();
+    x.open("GET", `${path}?ts=${Date.now()}`);
+    x.onload = () => (x.status === 0 || x.status === 200) ? onload(x.responseText) : onerror && onerror();
+    x.onerror = () => onerror && onerror();
+    x.send();
+  }
 
   function isoWeek(d) {
     const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -206,35 +71,27 @@
     const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
     return Math.ceil(((t - y0) / 86400000 + 1) / 7);
   }
+  const dayOfYear = d => Math.floor((d - new Date(d.getFullYear(), 0, 1)) / 86400000) + 1;
 
-  function dayOfYear(d) {
-    return Math.floor((d - new Date(d.getFullYear(), 0, 1)) / 86400000) + 1;
-  }
-
-  let renderedFor = null;
+  // ---- schedule data (written by fetch_schedule.py) ----
   let schedule = { days: {}, calendars: [], generated: null };
-  const isoDay = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-
   function loadSchedule() {
-    // XHR rather than fetch(): Chromium refuses fetch() on file:// URLs, XHR is allowed by QtWebEngine.
-    const x = new XMLHttpRequest();
-    x.open("GET", "schedule.json?ts=" + Date.now());
-    x.onload = () => {
-      try { schedule = JSON.parse(x.responseText); renderedFor = null; renderCalendar(new Date()); }
+    getLocal("schedule.json", text => {
+      try { schedule = JSON.parse(text); renderedFor = null; renderCalendar(new Date()); }
       catch (e) { console.warn("schedule.json unreadable", e); }
-    };
-    x.onerror = () => console.warn("schedule.json not found yet");
-    x.send();
+    }, () => console.warn("schedule.json not found yet"));
   }
 
+  // ---- calendar ----
+  let renderedFor = null;
   function renderCalendar(today) {
     const y = today.getFullYear(), m = today.getMonth();
-    const key = `${y}-${m}-${today.getDate()}`;
+    const key = isoDay(today);
     if (renderedFor === key) return;
     renderedFor = key;
 
-    document.getElementById("month").textContent = MONTHS[m];
-    document.getElementById("year").textContent = y;
+    $("month").textContent = MONTHS[m];
+    $("year").textContent = y;
 
     const first = new Date(y, m, 1);
     const offset = (first.getDay() - WEEK_START + 7) % 7;
@@ -242,16 +99,15 @@
     const weeks = Math.max(MIN_WEEKS, Math.ceil((offset + daysInMonth) / 7));
     const start = new Date(y, m, 1 - offset);
 
-    const grid = document.getElementById("grid");
+    const grid = $("grid");
     grid.innerHTML = "";
     grid.style.gridTemplateRows = `56px repeat(${weeks}, 1fr)`;
 
     for (let i = 0; i < 7; i++) {
-      const h = document.createElement("div");
-      h.className = "dow";
       const dd = (WEEK_START + i) % 7;
+      const h = document.createElement("div");
+      h.className = "dow" + (dd === 0 || dd === 6 ? " wkend" : "");
       h.textContent = DOW[dd];
-      if (dd === 0 || dd === 6) h.classList.add("wkend");
       grid.appendChild(h);
     }
 
@@ -267,52 +123,47 @@
       cell.className = classes.join(" ");
       cell.textContent = d.getDate();
       cell.dataset.date = isoDay(d);
-      const evs = schedule.days[cell.dataset.date] || [];
-      if (evs.length) {
-        const dots = document.createElement("span");
-        dots.className = "dots";
-        const seen = [];
-        for (const ev of evs) { if (!seen.includes(ev.color)) seen.push(ev.color); if (seen.length === 4) break; }
-        for (const c of seen) { const i = document.createElement("i"); i.style.background = c; dots.appendChild(i); }  // style prop, not HTML: safe
-        cell.appendChild(dots);
-      }
-      // Label the first visible day of a neighbouring month, so padded days read clearly.
+
+      // label the first visible day of a neighbouring month so padded days read clearly
       if (d.getMonth() !== m && (d.getDate() === 1 || i === 0)) {
         const tag = document.createElement("span");
         tag.className = "m";
         tag.textContent = MON_SHORT[d.getMonth()];
         cell.appendChild(tag);
       }
+
+      const evs = schedule.days[cell.dataset.date] || [];
+      if (evs.length) {
+        const dots = document.createElement("span");
+        dots.className = "dots";
+        const seen = [];
+        for (const ev of evs) { if (!seen.includes(ev.color)) seen.push(ev.color); if (seen.length === 4) break; }
+        for (const c of seen) { const i = document.createElement("i"); i.style.background = c; dots.appendChild(i); }
+        cell.appendChild(dots);
+      }
       grid.appendChild(cell);
     }
   }
 
+  // ---- clock ----
   function tick() {
     const now = new Date();
-    document.getElementById("hh").textContent = pad(now.getHours());
-    document.getElementById("mm").textContent = pad(now.getMinutes());
-    document.getElementById("secs").textContent = pad(now.getSeconds());
+    $("hh").textContent = pad(now.getHours());
+    $("mm").textContent = pad(now.getMinutes());
+    $("secs").textContent = pad(now.getSeconds());
     document.querySelector("#time .colon").classList.toggle("off", now.getMilliseconds() >= 500);
-    document.getElementById("date").innerHTML =
-      `<b>${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][now.getDay()]}</b>, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
-    document.getElementById("sub").textContent =
-      `WEEK ${pad(isoWeek(now))}  ·  DAY ${dayOfYear(now)}  ·  ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+    $("date").innerHTML = `<b>${DOW_LONG[now.getDay()]}</b>, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+    $("sub").textContent = `WEEK ${pad(isoWeek(now))}  ·  DAY ${dayOfYear(now)}  ·  ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
     renderCalendar(now);
     setTimeout(tick, 500 - (now.getMilliseconds() % 500));
   }
-  tick();
-  loadSchedule();
-  setInterval(loadSchedule, SCHEDULE_REFRESH_MS);
 
   // ---- press-and-hold day schedule ----
-  const sched = document.getElementById("sched");
-  const hhmm = iso => iso.slice(11, 16);
-  const esc = str => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-
+  const sched = $("sched");
   function showSchedule(key) {
     const [y, m, d] = key.split("-").map(Number);
     const date = new Date(y, m - 1, d);
-    sched.querySelector(".dow").textContent = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][date.getDay()];
+    sched.querySelector(".dow").textContent = DOW_LONG[date.getDay()];
     sched.querySelector(".dt").textContent = `${d} ${MONTHS[m - 1]} ${y}`;
     const list = sched.querySelector(".list");
     list.innerHTML = "";
@@ -320,8 +171,7 @@
     if (!evs.length) {
       list.innerHTML = `<div class="empty">Nothing scheduled</div>`;
     } else {
-      const MAX = MAX_EVENTS_SHOWN;
-      for (const ev of evs.slice(0, MAX)) {
+      for (const ev of evs.slice(0, MAX_EVENTS_SHOWN)) {
         const row = document.createElement("div");
         row.className = "ev";
         const cal = esc(ev.calendar.toUpperCase());
@@ -332,7 +182,7 @@
           `<div class="what">${esc(ev.title)}${ev.location ? `<small>${esc(ev.location)}</small>` : ""}</div>`;
         list.appendChild(row);
       }
-      if (evs.length > MAX) list.insertAdjacentHTML("beforeend", `<div class="more">+${evs.length - MAX} more</div>`);
+      if (evs.length > MAX_EVENTS_SHOWN) list.insertAdjacentHTML("beforeend", `<div class="more">+${evs.length - MAX_EVENTS_SHOWN} more</div>`);
     }
     sched.querySelector(".foot").textContent = schedule.generated
       ? `${evs.length} event${evs.length === 1 ? "" : "s"}  ·  updated ${hhmm(schedule.generated)}`
@@ -346,7 +196,7 @@
     document.querySelectorAll("#grid .day.held").forEach(el => el.classList.remove("held"));
   }
 
-  const grid = document.getElementById("grid");
+  const grid = $("grid");
   grid.addEventListener("pointerdown", e => {
     const cell = e.target.closest(".day");
     if (!cell || !cell.dataset.date) return;
@@ -355,56 +205,53 @@
     try { cell.setPointerCapture(e.pointerId); } catch (_) {}
     showSchedule(cell.dataset.date);
   });
-  for (const t of ["pointerup", "pointercancel", "lostpointercapture"]) grid.addEventListener(t, hideSchedule);
+  const RELEASE = ["pointerup", "pointercancel", "lostpointercapture"];
+  for (const t of RELEASE) grid.addEventListener(t, hideSchedule);
   window.addEventListener("blur", hideSchedule);
 
-  // ?hold=YYYY-MM-DD pins the panel open (used for remote screenshots)
-  const pinned = new URLSearchParams(location.search).get("hold");
+  // ?hold=YYYY-MM-DD pins the panel open (used for screenshots)
+  const pinned = PARAMS.get("hold");
   if (pinned) {
-    const pin = () => { if (schedule.generated) { showSchedule(pinned); } else setTimeout(pin, 300); };
-    pin();
-    for (const t of ["pointerup", "pointercancel", "lostpointercapture"]) grid.removeEventListener(t, hideSchedule);
+    for (const t of RELEASE) grid.removeEventListener(t, hideSchedule);
     window.removeEventListener("blur", hideSchedule);
+    const pin = () => schedule.generated ? showSchedule(pinned) : setTimeout(pin, 300);
+    pin();
   }
 
-  // ---- sakura accents ----
-  const PETAL = (fill, stroke) =>
-    `<svg viewBox="0 0 32 32"><path d="M16 2 C 22 6, 28 12, 26 20 C 24 27, 18 30, 16 30 C 14 30, 8 27, 6 20 C 4 12, 10 6, 16 2 Z M16 2 L 16 9" fill="${fill}" stroke="${stroke}" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
-  const PETAL_COLORS = [["#fbd3e0","#f1a7c1"],["#f8c4d6","#e995b4"],["#fde7ef","#f3b9cc"],["#f6a9bf","#e8457a"]];
+  // ---- theme: scene + particles ----
+  getLocal(`themes/${THEME}/scene.svg`, svg => { $("scene").innerHTML = svg; }, () => {});
+  getLocal(`themes/${THEME}/theme.json`, text => {
+    try { spawnParticles(JSON.parse(text).particles || {}); } catch (e) { console.warn("theme.json unreadable", e); }
+  }, () => {});
 
-  function spawnPetals(n) {
-    const host = document.getElementById("petals");
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  function spawnParticles(p) {
+    const n = p.count | 0;
+    if (!n || !p.path) return;
+    const host = $("particles");
+    const colors = p.colors && p.colors.length ? p.colors : [["#ffffff", "none"]];
+    const size = p.size || [18, 40], op = p.opacity || [0.45, 0.85];
+    const fall = p.fall || [18, 34], sway = p.sway || [3, 6], spin = p.spin || [6, 14];
     for (let i = 0; i < n; i++) {
       const el = document.createElement("div");
-      el.className = "petal";
-      const [f, st] = PETAL_COLORS[i % PETAL_COLORS.length];
-      el.innerHTML = PETAL(f, st);
-      const size = 18 + Math.random() * 22;
-      el.style.width = el.style.height = size + "px";
-      el.style.left = (Math.random() * 2560) + "px";
-      el.style.setProperty("--o", (0.45 + Math.random() * 0.4).toFixed(2));
-      const fall = 18 + Math.random() * 16, sway = 3 + Math.random() * 3, spin = 6 + Math.random() * 8;
-      el.style.animationDuration = `${fall}s, ${sway}s`;
-      el.style.animationDelay = `${-Math.random() * fall}s, ${-Math.random() * sway}s`;
-      el.querySelector("svg").style.animationDuration = spin + "s";
+      el.className = "particle";
+      const [fill, stroke] = colors[i % colors.length];
+      el.innerHTML = `<svg viewBox="${esc(p.viewBox || "0 0 32 32")}"><path d="${esc(p.path)}" fill="${esc(fill)}" stroke="${esc(stroke)}" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+      const s = rnd(size[0], size[1]);
+      el.style.width = el.style.height = s + "px";
+      el.style.left = rnd(0, 2560) + "px";
+      el.style.setProperty("--o", rnd(op[0], op[1]).toFixed(2));
+      const f = rnd(fall[0], fall[1]), w = rnd(sway[0], sway[1]);
+      el.style.animationDuration = `${f}s, ${w}s`;
+      el.style.animationDelay = `${-Math.random() * f}s, ${-Math.random() * w}s`;
+      el.querySelector("svg").style.animationDuration = rnd(spin[0], spin[1]) + "s";
       host.appendChild(el);
     }
   }
 
-  function blossom(cx, cy, r, open = true) {
-    const petals = [];
-    for (let k = 0; k < 5; k++) {
-      const a = (k / 5) * Math.PI * 2 - Math.PI / 2;
-      petals.push(`<ellipse cx="${(cx + Math.cos(a) * r * 0.55).toFixed(1)}" cy="${(cy + Math.sin(a) * r * 0.55).toFixed(1)}" rx="${(r*0.42).toFixed(1)}" ry="${(r*0.6).toFixed(1)}" transform="rotate(${(a*180/Math.PI + 90).toFixed(1)} ${(cx + Math.cos(a) * r * 0.55).toFixed(1)} ${(cy + Math.sin(a) * r * 0.55).toFixed(1)})" fill="${open ? "#f9cfdd" : "#f2b2c8"}" stroke="#e995b4" stroke-width="1"/>`);
-    }
-    return petals.join("") + `<circle cx="${cx}" cy="${cy}" r="${(r*0.22).toFixed(1)}" fill="#f6d365"/>`;
-  }
-  function decorate(id, spots) {
-    document.getElementById(id).innerHTML = spots.map(([x, y, r, o]) => blossom(x, y, r, o)).join("");
-  }
-  decorate("blossoms", [[90,262,20,true],[160,218,16,false],[205,180,22,true],[300,100,19,true],[345,112,13,false],[400,78,21,true],[455,38,17,false],[125,160,15,true],[240,150,14,false]]);
-  decorate("blossoms2", [[370,40,18,true],[310,66,15,false],[250,104,20,true],[200,180,16,false],[150,142,19,true],[80,186,15,true],[35,206,12,false]]);
-  spawnPetals(PETAL_COUNT);
+  tick();
+  loadSchedule();
+  setInterval(loadSchedule, SCHEDULE_REFRESH_MS);
 </script>
 </body>
 </html>

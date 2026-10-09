@@ -4,7 +4,7 @@ import QtWebEngine
 
 // Fullscreen kiosk window for a Corsair Xeneon Edge (2560x720) or any secondary panel.
 //
-//   qml6 kiosk.qml -- [--output=DP-4] [--hold=YYYY-MM-DD] [--shot]
+//   qml6 kiosk.qml -- [--output=DP-4] [--theme=tokyo] [--hold=YYYY-MM-DD] [--shot]
 //
 // Picks the screen named by --output; without it, the first 2560x720 screen.
 // Re-pins itself if screens change (hotplug / resume). Esc quits, F5 reloads,
@@ -25,7 +25,12 @@ Window {
     property string targetName: arg("--output")
     property int targetW: 2560
     property int targetH: 720
-    property string page: Qt.resolvedUrl("index.html") + (arg("--hold") ? "?hold=" + arg("--hold") : "")
+    property string page: {
+        var q = []
+        if (arg("--theme")) q.push("theme=" + arg("--theme"))
+        if (arg("--hold")) q.push("hold=" + arg("--hold"))
+        return Qt.resolvedUrl("index.html") + (q.length ? "?" + q.join("&") : "")
+    }
 
     function findTarget() {
         var scr = Qt.application.screens, byRes = null

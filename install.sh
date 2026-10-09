@@ -3,23 +3,24 @@
 # with this checkout's path, enables them, and on KDE Plasma applies a KWin rule and
 # maps the Edge touchscreen to its output.
 #
-#   ./install.sh [--output=DP-4] [--no-touch] [--no-start]
+#   ./install.sh [--output=DP-4] [--theme=tokyo] [--no-touch] [--no-start]
 #   ./install.sh --uninstall
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 UNIT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 CFG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/edge-dash"
-OUTPUT="" TOUCH=1 START=1 UNINSTALL=0
+OUTPUT="" THEME="" TOUCH=1 START=1 UNINSTALL=0
 TOUCH_NAME="wch.cn TouchScreen"   # the Edge's USB digitizer (27c0:0859)
 
 for a in "$@"; do
   case "$a" in
     --output=*) OUTPUT="${a#--output=}" ;;
+    --theme=*) THEME="${a#--theme=}" ;;
     --no-touch) TOUCH=0 ;;
     --no-start) START=0 ;;
     --uninstall) UNINSTALL=1 ;;
-    -h|--help) sed -n '2,8p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,7p' "$0"; exit 0 ;;
     *) echo "unknown option: $a" >&2; exit 2 ;;
   esac
 done
@@ -59,7 +60,7 @@ fi
 
 # ---- systemd user units --------------------------------------------------------
 mkdir -p "$UNIT_DIR"
-KIOSK_ARGS=""; [[ -n "$OUTPUT" ]] && KIOSK_ARGS=" --output=$OUTPUT"
+KIOSK_ARGS=""; [[ -n "$OUTPUT" ]] && KIOSK_ARGS+=" --output=$OUTPUT"; [[ -n "$THEME" ]] && KIOSK_ARGS+=" --theme=$THEME"
 for u in edge-dash.service edge-schedule.service edge-schedule.timer; do
   rm -f "$UNIT_DIR/$u"   # may be a symlink from an older install; never write through it
   sed -e "s|@DIR@|$DIR|g" -e "s|@UV@|$(command -v uv)|g" -e "s|@KIOSK_ARGS@|$KIOSK_ARGS|g" \

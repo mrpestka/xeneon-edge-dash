@@ -74,7 +74,12 @@ body.holding #scene, body.holding #particles { opacity: var(--scene-dim); }
 #calhead { display: flex; align-items: baseline; justify-content: space-between; padding: 0 10px 10px; }
 #month { font-size: 60px; font-weight: 500; color: var(--accent); }
 #year { font-size: 44px; color: var(--text-2); font-weight: 300; }
-#grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-auto-rows: 1fr; gap: 6px; touch-action: none; }
+#grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-auto-rows: 1fr; gap: 6px; }
+#cal { touch-action: none; user-select: none; }
+#grid.slide-left  { animation: slide-left  .22s ease-out; }
+#grid.slide-right { animation: slide-right .22s ease-out; }
+@keyframes slide-left  { from { opacity: 0; transform: translateX(40px); }  to { opacity: 1; transform: none; } }
+@keyframes slide-right { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
 #grid .dow { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px;
   font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
 #grid .dow.wkend { color: var(--accent-2); }

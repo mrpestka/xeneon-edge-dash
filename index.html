@@ -62,6 +62,9 @@
   const SHOW_PREV_MONTH = true;               // false: leading cells before the 1st stay blank
   const SCHEDULE_REFRESH_MS = 5 * 60 * 1000;  // how often to re-read schedule.json
   const MAX_EVENTS_SHOWN = 6;                 // rows in the held-day panel before "+N more"
+  const SWIPE_PX = 70;                        // horizontal travel that counts as a month swipe
+  const HOLD_DELAY_MS = 140;                  // press this long before a day's agenda opens (lets a swipe start cleanly)
+  const RETURN_TO_TODAY_MS = 90 * 1000;       // after swiping away, snap back to the current month once idle this long
 
   const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const DOW_LONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -104,10 +107,12 @@
 
   // ---- calendar ----
   let renderedFor = null;
-  function renderCalendar(today) {
-    const y = today.getFullYear(), m = today.getMonth();
-    const key = isoDay(today);
-    if (renderedFor === key) return;
+  let monthOffset = 0;                        // months away from the current one (swipe left/right)
+  function renderCalendar(today, force) {
+    const shown = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+    const y = shown.getFullYear(), m = shown.getMonth();
+    const key = `${isoDay(today)}@${monthOffset}`;
+    if (renderedFor === key && !force) return;
     renderedFor = key;
 
     $("month").textContent = MONTHS[m];
@@ -215,30 +220,64 @@
     sched.classList.add("show");
     document.body.classList.add("holding");
   }
-  function hideSchedule() {
+  let hideSchedule = function () {
     sched.classList.remove("show");
     document.body.classList.remove("holding");
     document.querySelectorAll("#grid .day.held").forEach(el => el.classList.remove("held"));
+  };
+
+  // ---- touch on the calendar: hold a day for its agenda, swipe left/right to change month ----
+  const grid = $("grid");
+  const cal = $("cal");
+  let press = null;                           // { x, y, id, cell, timer, swiped }
+  let returnTimer = null;
+
+  function changeMonth(dir) {
+    monthOffset += dir;
+    renderCalendar(new Date(), true);
+    grid.classList.remove("slide-left", "slide-right");
+    void grid.offsetWidth;                    // restart the animation
+    grid.classList.add(dir > 0 ? "slide-left" : "slide-right");
+    clearTimeout(returnTimer);
+    if (monthOffset !== 0) returnTimer = setTimeout(() => { monthOffset = 0; renderCalendar(new Date(), true); }, RETURN_TO_TODAY_MS);
   }
 
-  const grid = $("grid");
-  grid.addEventListener("pointerdown", e => {
-    const cell = e.target.closest(".day");
-    if (!cell || !cell.dataset.date) return;
+  function endPress() {
+    if (!press) return;
+    clearTimeout(press.timer);
+    press = null;
+    hideSchedule();
+  }
+
+  cal.addEventListener("pointerdown", e => {
+    if (!e.isPrimary) return;
     e.preventDefault();
-    cell.classList.add("held");
-    try { cell.setPointerCapture(e.pointerId); } catch (_) {}
-    showSchedule(cell.dataset.date);
+    endPress();
+    const cell = e.target.closest("#grid .day");
+    press = { x: e.clientX, y: e.clientY, id: e.pointerId, cell: cell && cell.dataset.date ? cell : null, timer: null, swiped: false };
+    try { cal.setPointerCapture(e.pointerId); } catch (_) {}
+    if (press.cell) {
+      press.cell.classList.add("held");
+      press.timer = setTimeout(() => { if (press && !press.swiped) showSchedule(press.cell.dataset.date); }, HOLD_DELAY_MS);
+    }
+  });
+  cal.addEventListener("pointermove", e => {
+    if (!press || e.pointerId !== press.id || press.swiped) return;
+    const dx = e.clientX - press.x, dy = e.clientY - press.y;
+    if (Math.abs(dx) < SWIPE_PX || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    press.swiped = true;
+    clearTimeout(press.timer);
+    hideSchedule();
+    changeMonth(dx < 0 ? 1 : -1);             // drag left = next month, drag right = previous
   });
   const RELEASE = ["pointerup", "pointercancel", "lostpointercapture"];
-  for (const t of RELEASE) grid.addEventListener(t, hideSchedule);
-  window.addEventListener("blur", hideSchedule);
+  for (const t of RELEASE) cal.addEventListener(t, e => { if (press && e.pointerId === press.id) endPress(); });
+  window.addEventListener("blur", endPress);
 
   // ?hold=YYYY-MM-DD pins the panel open (used for screenshots)
   const pinned = PARAMS.get("hold");
   if (pinned) {
-    for (const t of RELEASE) grid.removeEventListener(t, hideSchedule);
-    window.removeEventListener("blur", hideSchedule);
+    hideSchedule = () => {};                  // nothing may close it
     const pin = () => schedule.generated ? showSchedule(pinned) : setTimeout(pin, 300);
     pin();
   }

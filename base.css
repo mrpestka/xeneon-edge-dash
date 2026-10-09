@@ -102,6 +102,8 @@ body.holding #scene, body.holding #particles { opacity: var(--scene-dim); }
   padding: 44px 40px 36px 110px; display: flex; flex-direction: column; background: var(--panel-bg);
   opacity: 0; pointer-events: none; transition: opacity .15s ease; }
 #sched.show { opacity: 1; }
+#clock { transition: opacity .15s ease; }
+body.holding #clock { opacity: 0; }   /* the panel's right edge fades, so hide the clock outright */
 #sched .head { display: flex; align-items: baseline; gap: 22px; margin-bottom: 22px; }
 #sched .head .dow { font-size: 64px; font-weight: 500; color: var(--accent); }
 #sched .head .dt { font-size: 44px; font-weight: 300; color: var(--text-2); }

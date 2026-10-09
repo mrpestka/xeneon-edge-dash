@@ -24,14 +24,14 @@ and drifting petals.
 
 **Themes** are drop-in folders: a CSS token file, an optional 2560×720 SVG scene and
 an optional particle config. See [THEMES.md](THEMES.md) to make your own without
-touching the logic. Seven ship in `themes/`, switch with `./install.sh --theme=<name>`:
+touching the logic. Eight ship in `themes/`, switch with `./install.sh --theme=<name>`:
 
 | | |
 |---|---|
 | **tokyo** (default) — the Akko set, above | **tron** — neon grid, light-cycle trails, drifting bits<br>![tron](docs/themes/tron.png) |
 | **phosphor** — green CRT, monospace, scanlines<br>![phosphor](docs/themes/phosphor.png) | **circuit** — copper traces on solder mask<br>![circuit](docs/themes/circuit.png) |
 | **citypop** — 80s Tokyo at night: neon, moon, wet streets<br>![citypop](docs/themes/citypop.png) | **citypop-day** — synthwave sunset: big striped sun, a coupe on a rolling grid<br>![citypop-day](docs/themes/citypop-day.png) |
-| **minimal** — bare dark, the template to copy<br>![minimal](docs/themes/minimal.png) | |
+| **matrix** — phosphor's sibling with digital rain<br>![matrix](docs/themes/matrix.png) | **minimal** — bare dark, the template to copy<br>![minimal](docs/themes/minimal.png) |
 
 ## Requirements
 
@@ -105,7 +105,7 @@ index.html             the page: clock, calendar, hold-to-view panel, theme load
 base.css               layout + token defaults (the theme contract)
 themes/tokyo/          default theme: theme.css, scene.svg, theme.json
 themes/minimal/        bare dark theme, the starting point for your own
-themes/tron|phosphor|circuit|citypop|citypop-day/  more themes
+themes/tron|phosphor|matrix|circuit|citypop|citypop-day/  more themes
 THEMES.md              how to write a theme
 kiosk.qml              fullscreen QtWebEngine window pinned to the Edge
 edge-dash.sh           launcher (qml6)

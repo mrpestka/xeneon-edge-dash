@@ -1,0 +1,41 @@
+/* Matrix — phosphor's sibling: black console, Matrix green, digital rain falling
+   behind everything (scene.svg), monospace digits with a cursor-blink colon. */
+:root {
+  --font: "Noto Sans Mono", "DejaVu Sans Mono", monospace;
+  --bg: #000502;
+  --bg-2: #010b04;
+  --text: #c8ffd4;
+  --text-2: #37d85a;
+  --accent: #00ff41;
+  --accent-2: #9dffb3;
+  --muted: #1f9a3f;
+  --dim: #0f5a26;
+  --line: rgba(0, 255, 65, .28);
+
+  --card-bg: rgba(0, 14, 5, .93);
+  --card-edge: #0f7a2c;
+  --card-text: #8dffa9;
+  --card-shadow: 0 0 10px rgba(0, 255, 65, .08);
+  --card-weekend-bg: rgba(0, 24, 9, .93);
+  --card-weekend-edge: #1fbf4a;
+  --card-weekend-line: rgba(0, 255, 65, .42);
+  --card-weekend-text: #c8ffd4;
+
+  --today-bg: #00ff41;
+  --today-text: #001a06;
+  --today-edge: #c8ffd4;
+  --today-shadow: 0 0 28px rgba(0, 255, 65, .6);
+
+  --panel-bg: linear-gradient(90deg, #000502 0%, #000502 84%, rgba(0, 5, 2, 0) 100%);
+  --ev-bg: rgba(0, 14, 5, .94);
+  --scene-dim: .35;
+}
+#time, #month, #sched .head .dow { text-shadow: 0 0 12px rgba(0, 255, 65, .7), 0 0 2px rgba(200, 255, 212, .9); }
+#time { font-weight: 400; letter-spacing: -0.04em; }
+#date, #sub, #year, #grid .dow { text-shadow: 0 0 6px rgba(0, 0, 0, 1), 0 0 2px rgba(0, 0, 0, 1); }
+#date b, #month, #grid .dow, #sched .head .dow { text-transform: uppercase; letter-spacing: .08em; }
+#time .colon.off { opacity: .1; }
+#grid .day { border-radius: 2px; }
+#grid .day.other { color: #2fa14e; text-shadow: 0 0 6px rgba(0, 0, 0, 1); }
+#sched .ev { border-radius: 2px; }
+#sched .ev .bar { border-radius: 0; }

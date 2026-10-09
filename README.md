@@ -15,9 +15,10 @@ and drifting petals.
 - **24-hour clock** with seconds, date, ISO week and day of year.
 - **Month calendar**, Sunday or Monday start, always at least five full weeks
   (six when needed), padded with the neighbouring months' days (or blank leading cells,
-  one flag); today highlighted. **Swipe left/right** to page through months; a **Today**
-  button appears beside the month name while you're away, and the view snaps back on
-  its own after a minute and a half idle.
+  one flag); today highlighted.
+- **Month browsing**: swipe left/right on the calendar to page through months. A
+  **Today** button appears beside the month name while you're away, and the view snaps
+  back to the current month on its own after a minute and a half idle.
 - **Calendar feeds**: a small fetcher merges ICS feeds into `schedule.json` every
   15 minutes. Days with events get a dot per calendar; **hold a day** and the clock
   side swaps to that day's agenda, release to go back.

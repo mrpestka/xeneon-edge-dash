@@ -1,0 +1,14 @@
+{
+  "name": "City Pop",
+  "particles": {
+    "count": 16,
+    "viewBox": "0 0 8 48",
+    "path": "M4 2 L4 46",
+    "colors": [["none", "#9fe8f2"], ["none", "#ffb3dc"], ["none", "#cfefff"]],
+    "size": [22, 46],
+    "opacity": [0.15, 0.4],
+    "fall": [5, 9],
+    "sway": [20, 30],
+    "spin": [9999, 9999]
+  }
+}

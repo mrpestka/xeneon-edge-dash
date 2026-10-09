@@ -23,13 +23,13 @@ and drifting petals.
 
 **Themes** are drop-in folders: a CSS token file, an optional 2560×720 SVG scene and
 an optional particle config. See [THEMES.md](THEMES.md) to make your own without
-touching the logic. Five ship in `themes/`, switch with `./install.sh --theme=<name>`:
+touching the logic. Six ship in `themes/`, switch with `./install.sh --theme=<name>`:
 
 | | |
 |---|---|
 | **tokyo** (default) — the Akko set, above | **tron** — neon grid, light-cycle trails, drifting bits<br>![tron](docs/themes/tron.png) |
 | **phosphor** — green CRT, monospace, scanlines<br>![phosphor](docs/themes/phosphor.png) | **circuit** — copper traces on solder mask<br>![circuit](docs/themes/circuit.png) |
-| **minimal** — bare dark, the template to copy<br>![minimal](docs/themes/minimal.png) | |
+| **citypop** — 80s Tokyo at night: neon, moon, wet streets<br>![citypop](docs/themes/citypop.png) | **minimal** — bare dark, the template to copy<br>![minimal](docs/themes/minimal.png) |
 
 ## Requirements
 
@@ -103,7 +103,7 @@ index.html             the page: clock, calendar, hold-to-view panel, theme load
 base.css               layout + token defaults (the theme contract)
 themes/tokyo/          default theme: theme.css, scene.svg, theme.json
 themes/minimal/        bare dark theme, the starting point for your own
-themes/tron|phosphor|circuit/  more themes
+themes/tron|phosphor|circuit|citypop/  more themes
 THEMES.md              how to write a theme
 kiosk.qml              fullscreen QtWebEngine window pinned to the Edge
 edge-dash.sh           launcher (qml6)

@@ -1,0 +1,37 @@
+/* City Pop — late-night 80s Tokyo: indigo sky, teal towers, hot-pink neon, a crescent
+   moon and wet streets. Chill. Scene in scene.svg (signs flicker, taillights drift),
+   a little slow rain from theme.json. */
+:root {
+  --bg: #091632;
+  --bg-2: #0e2650;
+  --text: #eaf7ff;
+  --text-2: #7fe3ef;
+  --accent: #ff3fa4;            /* neon pink */
+  --accent-2: #35d0dc;          /* neon teal */
+  --muted: #6b86a8;
+  --dim: #2a3d5e;
+  --line: rgba(53, 208, 220, .28);
+
+  --card-bg: rgba(10, 28, 58, .82);
+  --card-edge: #1fa7b8;
+  --card-text: #eaf7ff;
+  --card-shadow: 0 4px 14px rgba(0, 0, 0, .35);
+  --card-weekend-bg: rgba(46, 18, 62, .8);
+  --card-weekend-edge: #d9358f;
+  --card-weekend-line: rgba(255, 63, 164, .3);
+  --card-weekend-text: #ffd6ec;
+
+  --today-bg: linear-gradient(160deg, #ff5fb0 0%, #ff2d95 100%);
+  --today-text: #fff;
+  --today-edge: #c21f70;
+  --today-shadow: 0 0 26px rgba(255, 63, 164, .55);
+
+  --panel-bg: linear-gradient(90deg, #091632 0%, #091632 84%, rgba(9, 22, 50, 0) 100%);
+  --ev-bg: rgba(10, 28, 58, .88);
+  --scene-dim: .22;
+}
+#time { text-shadow: 0 0 22px rgba(53, 208, 220, .35); }
+#time .colon { text-shadow: 0 0 16px rgba(255, 63, 164, .8); }
+#month, #sched .head .dow { text-shadow: 0 0 18px rgba(255, 63, 164, .55); font-style: italic; }
+#date b { font-style: italic; }
+#grid .day.today { text-shadow: 0 0 8px rgba(255, 255, 255, .6); }

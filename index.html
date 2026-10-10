@@ -409,6 +409,12 @@
   tick();
   loadSchedule();
   setInterval(loadSchedule, SCHEDULE_REFRESH_MS);
+
+  // QtWebEngine's V8 (up to 6.11) never collects garbage on its own, so renderer memory
+  // grows with every repaint until the heap limit kills it (QTBUG-150024). The kiosk
+  // exposes the collector (--js-flags=--expose-gc) and we run it ourselves; in any other
+  // browser window.gc is undefined and this does nothing.
+  if (typeof window.gc === "function") setInterval(window.gc, 30000);
 </script>
 </body>
 </html>

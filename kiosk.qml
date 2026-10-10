@@ -4,15 +4,15 @@ import QtWebEngine
 
 // Fullscreen kiosk window for a Corsair Xeneon Edge (2560x720) or any secondary panel.
 //
-//   qml6 kiosk.qml -- [--output=DP-4] [--theme=tokyo] [--set-theme=NAME|default] [--hold=YYYY-MM-DD] [--picker] [--shot] [--restart-hours=2]
+//   qml6 kiosk.qml -- [--output=DP-4] [--theme=tokyo] [--set-theme=NAME|default] [--hold=YYYY-MM-DD] [--picker] [--shot] [--restart-hours=24]
 //
 // --theme is the installed default; --set-theme stores a panel choice (what tapping the
 // hidden top-left corner does), "default" clears it.
 //
-// QtWebEngine 6.11 leaks renderer memory on every repaint (tens of MB a minute with an
-// animated theme) and reloading the page does not give it back, so the kiosk exits every
-// --restart-hours (default 2, 0 disables) and lets systemd start a fresh process. A dead
-// renderer is reloaded in place, which does get a new renderer process.
+// QtWebEngine's V8 (through 6.11.2) never garbage-collects on its own, so the renderer grows
+// with every repaint; edge-dash.sh exposes the collector and index.html runs it every 30 s.
+// As a safety net the kiosk still exits every --restart-hours (default 24, 0 disables) and
+// lets systemd start a fresh process. A dead renderer is reloaded in place.
 //
 // Picks the screen named by --output; without it, the first 2560x720 screen.
 // Re-pins itself if screens change (hotplug / resume). Esc quits, F5 reloads,
@@ -99,7 +99,7 @@ Window {
     }
     Timer { id: recover; interval: 1500; onTriggered: view.reload() }
 
-    property real restartHours: arg("--restart-hours") === "" ? 2 : Number(arg("--restart-hours"))
+    property real restartHours: arg("--restart-hours") === "" ? 24 : Number(arg("--restart-hours"))
     Timer {
         interval: restartHours * 3600 * 1000; repeat: false; running: restartHours > 0
         onTriggered: { console.warn("edge-dash: scheduled restart"); Qt.exit(75) }

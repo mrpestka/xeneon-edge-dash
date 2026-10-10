@@ -4,8 +4,8 @@
    a tower off to the right and a street that runs on into haze. Rain has just stopped: the
    road mirrors every sign. Nothing in the foreground; past the gate, people wander and
    taxis wait in ranks. Scene in
-   scene.svg (signs flicker, stars twinkle, people stroll: CSS animations, since SMIL leaks
-   memory in QtWebEngine), a little slow rain from theme.json. */
+   scene.svg (signs flicker, stars twinkle, people stroll: CSS animations, far cheaper to
+   repaint than SMIL in QtWebEngine), a little slow rain from theme.json. */
 :root {
   --bg: #091632;
   --bg-2: #0e2650;

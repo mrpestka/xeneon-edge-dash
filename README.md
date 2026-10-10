@@ -109,10 +109,12 @@ journalctl --user -u edge-dash -u edge-schedule -f
 Keys while the kiosk has focus: `Esc` quit, `F5` reload, `F12` screenshot.
 Touch: hold a day for its agenda; swipe left/right to change month (tap **Today** to
 jump back); tap the top-left corner for the theme picker.
-The kiosk restarts itself every 2 hours (`--restart-hours=N`, 0 disables): QtWebEngine
-leaks renderer memory on every repaint and only a fresh process gives it back. The panel
-is blank for a few seconds while systemd relaunches it. A crashed renderer is reloaded on
-the spot.
+QtWebEngine up to 6.11.2 never garbage-collects its renderer, so memory grows with every
+repaint until the process dies ([QTBUG-150024](https://bugreports.qt.io/browse/QTBUG-150024),
+fixed upstream). The launcher exposes V8's collector and the page runs it every 30 seconds,
+which keeps the renderer flat. As a safety net the kiosk also restarts itself once a day
+(`--restart-hours=N`, 0 disables); the panel is blank for a few seconds while systemd
+relaunches it. A crashed renderer is reloaded on the spot.
 
 ## Customising
 

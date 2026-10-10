@@ -51,8 +51,7 @@ body { display: grid; grid-template-columns: var(--clock-w) 1fr; position: relat
 #particles { overflow: hidden; }
 body.holding #scene, body.holding #particles { opacity: var(--scene-dim); }
 /* Particles animate only transform and opacity so they stay on the compositor. The sway used
-   to animate margin-left, which re-laid-out every particle every frame; QtWebEngine never
-   freed that churn and the renderer ran out of memory after half an hour. */
+   to animate margin-left, which re-laid-out every particle every frame. */
 .particle { position: absolute; top: -60px; opacity: 0; animation: fall linear infinite; }
 .particle .sway { width: 100%; height: 100%; animation: sway ease-in-out infinite alternate; }
 .particle svg { width: 100%; height: 100%; display: block; animation: spin linear infinite; }
